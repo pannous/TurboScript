@@ -1168,6 +1168,8 @@ class ParserContext {
         let name: string;
 
         let VOID=createName("void").withRange(token.range);// wtf api
+        let ANY=createName("any").withRange(token.range);// wtf api
+        let AUTO=createName("auto").withRange(token.range);// wtf api
         let DEFAULT_RETURN_TYPE = VOID;
 
         // Support custom operators
@@ -1256,8 +1258,15 @@ class ParserContext {
             }
             name = nameRange.toString();
         }
-
+/////////////////////////////////////////
         let node = createFunction(name);
+/////////////////////////////////////////
+        if (name == "main") {
+            let flag = new NodeFlag();
+            flag.flag=NODE_FLAG_EXPORT
+            flag.next=  firstFlag
+            firstFlag=flag
+        }
         node.firstFlag = firstFlag;
         node.flags = allFlags(firstFlag);
         if (isOperator) {
@@ -1282,7 +1291,7 @@ class ParserContext {
                 let firstArgumentFlag = this.parseFlags();
 
                 let argument = this.current;
-                ;
+
                 if (!this.expect(TokenKind.IDENTIFIER)) {
                     return null;
                 }
@@ -1377,13 +1386,12 @@ class ParserContext {
             returnType = createAny();
         }
         else {
-
             if (node.stringValue == "constructor") {
                 returnType = new Node();
                 returnType.kind = NodeKind.NAME;
                 returnType.stringValue = parent.stringValue;
             } else if (this.expect(TokenKind.COLON)) {
-                if(token.kind == TokenKind.LEFT_BRACE)
+                if(this.peek(TokenKind.LEFT_BRACE ))
                     returnType = DEFAULT_RETURN_TYPE;
                 else
                     returnType = this.parseType();

@@ -310,11 +310,14 @@ export function tokenize(source: Source, log: Log): Token {
                     else if (text == "if") kind = TokenKind.IF;
                     else if (text == "or") kind = TokenKind.IF;
                     else if (text == "is") kind = TokenKind.EQUAL; // todo
+                    else if (text == "to") kind = TokenKind.FUNCTION;
+
                     // else if (text == "is") kind = TokenKind.ASSIGN;// todo
                 }
 
                 else if (length == 3) {
                     if (text == "let") kind = TokenKind.LET;
+                    else if (text == "def") kind = TokenKind.FUNCTION;
                     else if (text == "new") kind = TokenKind.NEW;
                     else if (text == "var") kind = TokenKind.VAR;
                     else if (text == "val") kind = TokenKind.VAR;

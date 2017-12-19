@@ -57,8 +57,15 @@ export class Scope {
       }
       scope = scope.parent;
     }
-    if(name=="int")
-      return this.findNested("int32",hint,mode)// todo better
+      if(name=="bool") return this.findNested("boolean",hint,mode)// todo better
+      if(name=="byte") return this.findNested("int8",hint,mode)// todo better
+      if(name=="short") return this.findNested("int16",hint,mode)// todo better
+      if(name=="int") return this.findNested("int32",hint,mode)// todo better
+      if(name=="long") return this.findNested("int64",hint,mode)// todo better
+      if(name=="float") return this.findNested("float32",hint,mode)// todo better
+      if(name=="double") return this.findNested("float64",hint,mode)// todo better
+      if(name=="number") return this.findNested("float64",hint,mode)// todo better
+      // if(name=="char") dont return this.findNested("int8",hint,mode)// todo better
     return null;
   }
 
