@@ -102,8 +102,9 @@ export function main_entry(): int32 {
 
     // Must have an output
     if (output == null) {
-        Terminal.error("Missing an output file (use the --out flag)");
-        return 1;
+        // Terminal.error("Missing an output file (use the --out flag)");
+        // return 1;
+        output="out.wasm"
     }
 
     outputPath = FileSystem.getBasePath(output);

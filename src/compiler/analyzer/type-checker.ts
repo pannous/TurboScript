@@ -917,6 +917,11 @@ export function canConvert(context: CheckContext, node: Node, to: Type, kind: Co
         }
     }
 
+    // Allow conversions to boolean
+    else if (to == context.booleanType) {
+        return true;
+    }
+
     // Allow conversions from boolean
     else if (from == context.booleanType) {
         return true;

@@ -2,7 +2,8 @@
 // const PrepackWebpackPlugin = require("prepack-webpack-plugin").default;
 const path = require("path");
 const webpack = require("webpack");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+ var BeepPlugin = require('webpack-beep-plugin');
 
 const entry = process.env.NODE_ENV === "dev" ? {"turboscript": "./src/index.ts"} : {
     "turboscript": "./src/index.ts",
@@ -18,15 +19,16 @@ module.exports = {
         extensions: [".ts", ".js"]
     },
     plugins: [
+        new BeepPlugin(),
         // new PrepackWebpackPlugin({})
         new webpack.DefinePlugin({
             VERSION: JSON.stringify(require("./package.json").version)
         }),
-        new UglifyJsPlugin({
-            mangle: false, compress: true,
-            minimize: true,
-            include: /\.min\.js$/,
-        })
+        // new UglifyJsPlugin({
+        //     mangle: false, compress: true,
+        //     minimize: true,
+        //     include: /\.min\.js$/,
+        // })
     ],
     module: {
         rules: [

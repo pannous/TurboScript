@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "dependencies": {
-    "binaryen": "1.37.13-nightly.20170617"
+    "binaryen": "1.37.13-nightly.20170617",
+    "webpack-beep-plugin": "^1.0.0"
   },
   "devDependencies": {
     "@types/debug": "^0.0.29",

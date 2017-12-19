@@ -140,6 +140,8 @@ class ParserContext {
 
     expect(kind: TokenKind): boolean {
         if (!this.peek(kind)) {
+            if(kind==TokenKind.SEMICOLON)return true;// optional semicolon
+            if(kind==TokenKind.COLON)return true; // optional COLON
             if (this.lastError != this.current) {
                 this.lastError = this.current;
 
@@ -1165,6 +1167,9 @@ class ParserContext {
         let nameRange: SourceRange;
         let name: string;
 
+        let VOID=createName("void").withRange(token.range);// wtf api
+        let DEFAULT_RETURN_TYPE = VOID;
+
         // Support custom operators
         if (parent != null && this.eat(TokenKind.OPERATOR)) {
             let end = this.current;
@@ -1378,7 +1383,10 @@ class ParserContext {
                 returnType.kind = NodeKind.NAME;
                 returnType.stringValue = parent.stringValue;
             } else if (this.expect(TokenKind.COLON)) {
-                returnType = this.parseType();
+                if(token.kind == TokenKind.LEFT_BRACE)
+                    returnType = DEFAULT_RETURN_TYPE;
+                else
+                    returnType = this.parseType();
 
                 if (this.peek(TokenKind.LESS_THAN)) {
                     let parameters = this.parseParameters();
@@ -1391,7 +1399,7 @@ class ParserContext {
                 if (returnType == null) {
                     // Recover from a missing return type
                     if (this.peek(TokenKind.SEMICOLON) || this.peek(TokenKind.LEFT_BRACE)) {
-                        returnType = createParseError();
+                        returnType = DEFAULT_RETURN_TYPE;//createParseError();
                     }
 
                     else {

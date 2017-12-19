@@ -34,6 +34,12 @@ declare class int32 {
     toString(): string;
 }
 
+// alias int int32
+// declare class int extends int32 {
+//     toString(): string;
+// }
+
+
 declare class uint32 {
     toString(): string;
 }

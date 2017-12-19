@@ -115,6 +115,8 @@ export class Token {
     kind: TokenKind;
     range: SourceRange;
     next: Token;
+    name: String;
+    type: String;
 }
 
 export function splitToken(first: Token, firstKind: TokenKind, secondKind: TokenKind): void {
@@ -306,13 +308,21 @@ export function tokenize(source: Source, log: Log): Token {
                 if (length == 2) {
                     if (text == "as") kind = TokenKind.AS;
                     else if (text == "if") kind = TokenKind.IF;
+                    else if (text == "or") kind = TokenKind.IF;
+                    else if (text == "is") kind = TokenKind.EQUAL; // todo
+                    // else if (text == "is") kind = TokenKind.ASSIGN;// todo
                 }
 
                 else if (length == 3) {
                     if (text == "let") kind = TokenKind.LET;
                     else if (text == "new") kind = TokenKind.NEW;
                     else if (text == "var") kind = TokenKind.VAR;
+                    else if (text == "val") kind = TokenKind.VAR;
                     else if (text == "for") kind = TokenKind.FOR;
+                    else if (text == "and") kind = TokenKind.LOGICAL_AND;
+                    else if (text == "not") kind = TokenKind.NOT;
+                    else if (text == "nil") kind = TokenKind.NULL;
+                    else if (text == "nul") kind = TokenKind.NULL;
                     else if (text == "@JS") kind = TokenKind.JAVASCRIPT;
                 }
 
@@ -320,7 +330,12 @@ export function tokenize(source: Source, log: Log): Token {
                     if (text == "else") kind = TokenKind.ELSE;
                     else if (text == "enum") kind = TokenKind.ENUM;
                     else if (text == "null") kind = TokenKind.NULL;
+                    else if (text == "Null") kind = TokenKind.NULL;
+                    else if (text == "none") kind = TokenKind.NULL;
+                    else if (text == "None") kind = TokenKind.NULL;
                     else if (text == "this") kind = TokenKind.THIS;
+                    else if (text == "self") kind = TokenKind.THIS;
+                    else if (text == "True") kind = TokenKind.TRUE;
                     else if (text == "true") kind = TokenKind.TRUE;
                     else if (text == "from") kind = TokenKind.FROM;
                 }
@@ -330,6 +345,7 @@ export function tokenize(source: Source, log: Log): Token {
                     else if (text == "class") kind = TokenKind.CLASS;
                     else if (text == "const") kind = TokenKind.CONST;
                     else if (text == "false") kind = TokenKind.FALSE;
+                    else if (text == "False") kind = TokenKind.FALSE;
                     else if (text == "while") kind = TokenKind.WHILE;
                 }
 
@@ -342,22 +358,23 @@ export function tokenize(source: Source, log: Log): Token {
                     else if (text == "sizeof") kind = TokenKind.SIZEOF;
                     else if (text == "static") kind = TokenKind.STATIC;
                     else if (text == "unsafe") kind = TokenKind.UNSAFE;
-                    else if (text == "@start") kind = TokenKind.START;
+                    else if (text == "@start") kind = TokenKind.START;// ?
                     else if (text == "delete") kind = TokenKind.DELETE;
                 }
 
                 else if (length == 7) {
-                    if (text == "alignof") kind = TokenKind.ALIGNOF;
+                    if (text == "alignof") kind = TokenKind.ALIGNOF;// ?
                     else if (text == "declare") kind = TokenKind.DECLARE;
                     else if (text == "extends") kind = TokenKind.EXTENDS;
                     else if (text == "private") kind = TokenKind.PRIVATE;
-                    else if (text == "anyfunc") kind = TokenKind.ANYFUNC;
+                    else if (text == "anyfunc") kind = TokenKind.ANYFUNC;// ?
                 }
 
                 else {
                     if (text == "continue") kind = TokenKind.CONTINUE;
                     else if (text == "@virtual") kind = TokenKind.VIRTUAL;
                     else if (text == "function") kind = TokenKind.FUNCTION;
+                    else if (text == "constant") kind = TokenKind.CONST;
                     else if (text == "implements") kind = TokenKind.IMPLEMENTS;
                     else if (text == "protected") kind = TokenKind.PROTECTED;
                 }
@@ -720,6 +737,8 @@ export function tokenize(source: Source, log: Log): Token {
         let token = new Token();
         token.kind = kind;
         token.range = range;
+        token.name = range.toString();
+        token.type = tokenToString(kind);
 
         if (first == null) first = token;
         else last.next = token;

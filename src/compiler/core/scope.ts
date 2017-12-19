@@ -57,6 +57,8 @@ export class Scope {
       }
       scope = scope.parent;
     }
+    if(name=="int")
+      return this.findNested("int32",hint,mode)// todo better
     return null;
   }
 
