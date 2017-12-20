@@ -1,4 +1,4 @@
-import {Bitness} from "../../bitness";
+import {Bitness} from "../bitness";
 import {Type} from "../../compiler/core/type";
 import {WasmType, WasmWrappedType} from "../core/wasm-type";
 import {assert} from "../../utils/assert";

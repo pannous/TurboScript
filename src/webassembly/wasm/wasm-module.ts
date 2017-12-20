@@ -4,7 +4,7 @@ import { WasmImport } from "../core/wasm-import";
 import { wasmAreSignaturesEqual, WasmSignature } from "../core/wasm-signature";
 import { WasmGlobal } from "../core/wasm-global";
 import { ByteArray } from "../../utils/bytearray";
-import { Bitness } from "../../bitness";
+import { Bitness } from "../bitness";
 import { Symbol } from "../../compiler/core/symbol";
 import { symbolToWasmType } from "../utils/index";
 import { WasmType } from "../core/wasm-type";
