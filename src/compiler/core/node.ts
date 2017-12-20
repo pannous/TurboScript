@@ -4,7 +4,6 @@ import {SourceRange} from "../../utils/log";
 import {Scope} from "./scope";
 import {addScopeToSymbol, CheckContext, linkSymbolToNode} from "../analyzer/type-checker";
 import {assert} from "../../utils/assert";
-// import {Function} from "binaryen";
 
 /**
  * Author: Nidin Vinayakan
@@ -551,7 +550,7 @@ export class Node {
     }
 
     createEmptyConstructor(): Node {
-        let node = new Function("constructor");
+        let node = new XFunction("constructor");
         node.appendChild(createName(this.symbol.name));
         let body = createBlock();
         node.appendChild(body);
@@ -1100,7 +1099,7 @@ export class Node {
 }
 
 
-class Function extends Node{
+export class XFunction extends Node{
 	constructor(name: String){
 		super({kind : NodeKind.FUNCTION,stringValue :name});
 	}
@@ -1429,7 +1428,7 @@ export function createVariable(name: string, type: Node, value: Node): Node {
 }
 
 export function createFunction(name: string): Node {
-	let node = new Function(name);
+	let node = new XFunction(name);
 	// let node = new Node({kind : NodeKind.FUNCTION,stringValue :name});
     // node.kind = NodeKind.FUNCTION;
     // node.stringValue = name;

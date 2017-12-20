@@ -50,7 +50,8 @@ import {
     Node,
     NODE_FLAG,
     NodeFlag,
-    NodeKind
+    NodeKind,
+	XFunction
 } from "../core/node";
 import {assert} from "../../utils/assert";
 import {Terminal} from "../../utils/terminal";
@@ -390,7 +391,7 @@ class ParserContext {
         return null;
     }
 
-    parseInfix(precedence: Precedence, node: Node, mode: ParseKind): Node {
+    parseInfix(precedence: Precedence, current_node: Node, mode: ParseKind): Node {
         let token = this.current.range;
 
         // Dot
@@ -410,35 +411,35 @@ class ParserContext {
                 range = createRange(range.source, token.end, token.end);
             }
 
-            return createDot(node, range.toString()).withRange(spanRanges(node.range, range)).withInternalRange(range);
+            return createDot(current_node, range.toString()).withRange(spanRanges(current_node.range, range)).withInternalRange(range);
         }
 
         if (mode == ParseKind.EXPRESSION) {
             // Binary
-            if (this.peek(TokenKind.ASSIGN)) return this.parseBinary(NodeKind.ASSIGN, node, precedence, Precedence.ASSIGN);
-            if (this.peek(TokenKind.BITWISE_AND)) return this.parseBinary(NodeKind.BITWISE_AND, node, precedence, Precedence.BITWISE_AND);
-            if (this.peek(TokenKind.BITWISE_OR)) return this.parseBinary(NodeKind.BITWISE_OR, node, precedence, Precedence.BITWISE_OR);
-            if (this.peek(TokenKind.BITWISE_XOR)) return this.parseBinary(NodeKind.BITWISE_XOR, node, precedence, Precedence.BITWISE_XOR);
-            if (this.peek(TokenKind.DIVIDE)) return this.parseBinary(NodeKind.DIVIDE, node, precedence, Precedence.MULTIPLY);
-            if (this.peek(TokenKind.EQUAL)) return this.parseBinary(NodeKind.EQUAL, node, precedence, Precedence.EQUAL);
-            if (this.peek(TokenKind.EXPONENT)) return this.parseBinary(NodeKind.EXPONENT, node, precedence, Precedence.EXPONENT);
-            if (this.peek(TokenKind.GREATER_THAN)) return this.parseBinary(NodeKind.GREATER_THAN, node, precedence, Precedence.COMPARE);
-            if (this.peek(TokenKind.GREATER_THAN_EQUAL)) return this.parseBinary(NodeKind.GREATER_THAN_EQUAL, node, precedence, Precedence.COMPARE);
-            if (this.peek(TokenKind.LESS_THAN)) return this.parseBinary(NodeKind.LESS_THAN, node, precedence, Precedence.COMPARE);
-            if (this.peek(TokenKind.LESS_THAN_EQUAL)) return this.parseBinary(NodeKind.LESS_THAN_EQUAL, node, precedence, Precedence.COMPARE);
-            if (this.peek(TokenKind.LOGICAL_AND)) return this.parseBinary(NodeKind.LOGICAL_AND, node, precedence, Precedence.LOGICAL_AND);
-            if (this.peek(TokenKind.LOGICAL_OR)) return this.parseBinary(NodeKind.LOGICAL_OR, node, precedence, Precedence.LOGICAL_OR);
-            if (this.peek(TokenKind.MINUS)) return this.parseBinary(NodeKind.SUBTRACT, node, precedence, Precedence.ADD);
-            if (this.peek(TokenKind.MULTIPLY)) return this.parseBinary(NodeKind.MULTIPLY, node, precedence, Precedence.MULTIPLY);
-            if (this.peek(TokenKind.NOT_EQUAL)) return this.parseBinary(NodeKind.NOT_EQUAL, node, precedence, Precedence.EQUAL);
-            if (this.peek(TokenKind.PLUS)) return this.parseBinary(NodeKind.ADD, node, precedence, Precedence.ADD);
-            if (this.peek(TokenKind.REMAINDER)) return this.parseBinary(NodeKind.REMAINDER, node, precedence, Precedence.MULTIPLY);
-            if (this.peek(TokenKind.SHIFT_LEFT)) return this.parseBinary(NodeKind.SHIFT_LEFT, node, precedence, Precedence.SHIFT);
-            if (this.peek(TokenKind.SHIFT_RIGHT)) return this.parseBinary(NodeKind.SHIFT_RIGHT, node, precedence, Precedence.SHIFT);
+            if (this.peek(TokenKind.ASSIGN)) return this.parseBinary(NodeKind.ASSIGN, current_node, precedence, Precedence.ASSIGN);
+            if (this.peek(TokenKind.BITWISE_AND)) return this.parseBinary(NodeKind.BITWISE_AND, current_node, precedence, Precedence.BITWISE_AND);
+            if (this.peek(TokenKind.BITWISE_OR)) return this.parseBinary(NodeKind.BITWISE_OR, current_node, precedence, Precedence.BITWISE_OR);
+            if (this.peek(TokenKind.BITWISE_XOR)) return this.parseBinary(NodeKind.BITWISE_XOR, current_node, precedence, Precedence.BITWISE_XOR);
+            if (this.peek(TokenKind.DIVIDE)) return this.parseBinary(NodeKind.DIVIDE, current_node, precedence, Precedence.MULTIPLY);
+            if (this.peek(TokenKind.EQUAL)) return this.parseBinary(NodeKind.EQUAL, current_node, precedence, Precedence.EQUAL);
+            if (this.peek(TokenKind.EXPONENT)) return this.parseBinary(NodeKind.EXPONENT, current_node, precedence, Precedence.EXPONENT);
+            if (this.peek(TokenKind.GREATER_THAN)) return this.parseBinary(NodeKind.GREATER_THAN, current_node, precedence, Precedence.COMPARE);
+            if (this.peek(TokenKind.GREATER_THAN_EQUAL)) return this.parseBinary(NodeKind.GREATER_THAN_EQUAL, current_node, precedence, Precedence.COMPARE);
+            if (this.peek(TokenKind.LESS_THAN)) return this.parseBinary(NodeKind.LESS_THAN, current_node, precedence, Precedence.COMPARE);
+            if (this.peek(TokenKind.LESS_THAN_EQUAL)) return this.parseBinary(NodeKind.LESS_THAN_EQUAL, current_node, precedence, Precedence.COMPARE);
+            if (this.peek(TokenKind.LOGICAL_AND)) return this.parseBinary(NodeKind.LOGICAL_AND, current_node, precedence, Precedence.LOGICAL_AND);
+            if (this.peek(TokenKind.LOGICAL_OR)) return this.parseBinary(NodeKind.LOGICAL_OR, current_node, precedence, Precedence.LOGICAL_OR);
+            if (this.peek(TokenKind.MINUS)) return this.parseBinary(NodeKind.SUBTRACT, current_node, precedence, Precedence.ADD);
+            if (this.peek(TokenKind.MULTIPLY)) return this.parseBinary(NodeKind.MULTIPLY, current_node, precedence, Precedence.MULTIPLY);
+            if (this.peek(TokenKind.NOT_EQUAL)) return this.parseBinary(NodeKind.NOT_EQUAL, current_node, precedence, Precedence.EQUAL);
+            if (this.peek(TokenKind.PLUS)) return this.parseBinary(NodeKind.ADD, current_node, precedence, Precedence.ADD);
+            if (this.peek(TokenKind.REMAINDER)) return this.parseBinary(NodeKind.REMAINDER, current_node, precedence, Precedence.MULTIPLY);
+            if (this.peek(TokenKind.SHIFT_LEFT)) return this.parseBinary(NodeKind.SHIFT_LEFT, current_node, precedence, Precedence.SHIFT);
+            if (this.peek(TokenKind.SHIFT_RIGHT)) return this.parseBinary(NodeKind.SHIFT_RIGHT, current_node, precedence, Precedence.SHIFT);
 
             // Unary postfix
-            if (this.peek(TokenKind.PLUS_PLUS)) return this.parseUnaryPostfix(NodeKind.POSTFIX_INCREMENT, node, precedence);
-            if (this.peek(TokenKind.MINUS_MINUS)) return this.parseUnaryPostfix(NodeKind.POSTFIX_DECREMENT, node, precedence);
+            if (this.peek(TokenKind.PLUS_PLUS)) return this.parseUnaryPostfix(NodeKind.POSTFIX_INCREMENT, current_node, precedence);
+            if (this.peek(TokenKind.MINUS_MINUS)) return this.parseUnaryPostfix(NodeKind.POSTFIX_DECREMENT, current_node, precedence);
 
             // Cast
             if (this.peek(TokenKind.AS) && precedence < Precedence.UNARY_PREFIX) {
@@ -449,13 +450,13 @@ class ParserContext {
                     return null;
                 }
 
-                return createCast(node, type).withRange(spanRanges(node.range, type.range)).withInternalRange(token);
+                return createCast(current_node, type).withRange(spanRanges(current_node.range, type.range)).withInternalRange(token);
             }
 
             // Call or index
             let isIndex = this.peek(TokenKind.LEFT_BRACKET);
             if ((isIndex || this.peek(TokenKind.LEFT_PARENTHESIS)) && precedence < Precedence.UNARY_POSTFIX) {
-                return this.parseArgumentList(node.range, isIndex ? createIndex(node) : createCall(node));
+                return this.parseArgumentList(current_node.range, isIndex ? createIndex(current_node) : createCall(current_node));
             }
 
             // Hook
@@ -472,11 +473,11 @@ class ParserContext {
                     return null;
                 }
 
-                return createHook(node, middle, right).withRange(spanRanges(node.range, right.range));
+                return createHook(current_node, middle, right).withRange(spanRanges(current_node.range, right.range));
             }
         }
 
-        return node;
+        return current_node;
     }
 
     parseDelete(): Node {
@@ -1249,7 +1250,7 @@ class ParserContext {
             name = nameRange.toString();
         }
 /////////////////////////////////////////
-        let node = createFunction(name);
+        let node = new XFunction(name);
 /////////////////////////////////////////
         if (name == "main") {
             let flag = new NodeFlag();
