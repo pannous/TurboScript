@@ -32,3 +32,4 @@ lib/tc.js.map
 test/snapshots/
 tests/bin/
 .turbotest.js
+out.wasm out.wast test.js

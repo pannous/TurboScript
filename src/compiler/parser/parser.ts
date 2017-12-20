@@ -1169,8 +1169,12 @@ class ParserContext {
 
         let VOID=createName("void").withRange(token.range);// wtf api
         let ANY=createName("any").withRange(token.range);// wtf api
+        let INT=createName("int").withRange(token.range);// wtf api
         let AUTO=createName("auto").withRange(token.range);// wtf api
         let DEFAULT_RETURN_TYPE = VOID;
+        
+        // let DEFAULT_RETURN_TYPE = INT;
+    // > CompileError: WasmCompile: Compiling wasm function #4:todo failed: expected 1 elements on the stack for fallthru to @1 @+134
 
         // Support custom operators
         if (parent != null && this.eat(TokenKind.OPERATOR)) {

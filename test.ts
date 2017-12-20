@@ -1,7 +1,17 @@
 #!./test.sh
+// import {Math} from "javascript";
+// import {console} from "javascript";
+// import {XXX} from "javascript";
+
 def fib(n: int): int {
     if (n <= 1) return 1
-    fib(n - 1) + fib(n - 2)
+    else fib(n - 1) + fib(n - 2)
+}
+
+def test():int{
+	// if(1)42
+	// else 0
+	if(1)return 42
 }
 
 def assert(test: bool){
@@ -32,5 +42,5 @@ def main():int{
   // var z:any="HI"
   // if(y)console.log(y)
   // return 
-  fib(30)
+  fib(30)+fib(30)+test()
 }

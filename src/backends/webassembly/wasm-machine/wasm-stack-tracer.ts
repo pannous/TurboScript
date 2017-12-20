@@ -170,6 +170,7 @@ export class WasmStackTracer {
 
             case WasmOpcode.RETURN:
                 if (this.context.stack.length == 0) {
+                    // happens when def x(){if(1)1
                     Terminal.warn(`Empty stack on return in function ${this.context.fn.name}`);
                 }
                 return "return";
