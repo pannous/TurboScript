@@ -8,13 +8,13 @@ import {Scope} from "./core/scope";
 import {tokenize} from "./scanner/scanner";
 import {parse} from "./parser/parser";
 import {treeShaking} from "./optimizer/shaking";
-import {wasmEmit} from "../backends/webassembly/webassembly";
+import {wasmEmit} from "..//webassembly/webassembly";
 import {Library} from "../library/library";
 import {preparse} from "./parser/preparser";
 import {CompileTarget} from "./compile-target";
 import {assert} from "../utils/assert";
 import {Terminal} from "../utils/terminal";
-import {WasmBinary} from "../backends/webassembly/wasm/wasm-binary";
+import {WasmBinary} from "..//webassembly/wasm/wasm-binary";
 import {BinaryImporter} from "../importer/binary-importer";
 /**
  * Author: Nidin Vinayakan

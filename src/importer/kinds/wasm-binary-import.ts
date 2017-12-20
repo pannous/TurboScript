@@ -1,5 +1,5 @@
-import {WasmSignature} from "../../backends/webassembly/core/wasm-signature";
-import {wasmToTurboType} from "../../backends/webassembly/utils/index";
+import {WasmSignature} from "../..//webassembly/core/wasm-signature";
+import {wasmToTurboType} from "../..//webassembly/utils/index";
 /**
  * Created by n.vinayakan on 23.06.17.
  */

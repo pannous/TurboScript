@@ -1,7 +1,7 @@
 import {isFunction, SYMBOL_FLAG_USED} from "../core/symbol";
 import {Node, NodeKind} from "../core/node";
 import {Compiler} from "../compiler";
-import {getWasmFunctionName} from "../../backends/webassembly/utils/index";
+import {getWasmFunctionName} from "../..//webassembly/utils/index";
 import {isBinaryImport} from "../../importer/binary-importer";
 
 export function treeShakingMarkAllUsed(node: Node): void {
