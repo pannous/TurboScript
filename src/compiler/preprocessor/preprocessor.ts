@@ -1,5 +1,5 @@
 import {DiagnosticKind, Log, Source, spanRanges} from "../../utils/log";
-import {Token, TokenKind, tokenToString} from "../scanner/scanner";
+import {Token, Tokens, tokenToString} from "../scanner/scanner";
 import {Precedence} from "../parser/parser";
 export enum PreprocessorValue {
     FALSE,
@@ -26,11 +26,11 @@ export class Preprocessor {
     current: Token;
     log: Log;
 
-    peek(kind: TokenKind): boolean {
+    peek(kind: Tokens): boolean {
         return this.current.kind == kind;
     }
 
-    eat(kind: TokenKind): boolean {
+    eat(kind: Tokens): boolean {
         if (this.peek(kind)) {
             this.advance();
             return true;
@@ -40,7 +40,7 @@ export class Preprocessor {
     }
 
     advance(): void {
-        if (!this.peek(TokenKind.END_OF_FILE)) {
+        if (!this.peek(Tokens.END_OF_FILE)) {
             this.previous = this.current;
             this.current = this.current.next;
         }
@@ -50,7 +50,7 @@ export class Preprocessor {
         this.log.error(this.current.range, `Unexpected ${tokenToString(this.current.kind)}`);
     }
 
-    expect(kind: TokenKind): boolean {
+    expect(kind: Tokens): boolean {
         if (!this.peek(kind)) {
             this.log.error(
                 this.current.range,
@@ -90,7 +90,7 @@ export class Preprocessor {
     run(source: Source, log: Log): void {
         var firstToken = source.firstToken;
 
-        if (firstToken != null && firstToken.kind == TokenKind.PREPROCESSOR_NEEDED) {
+        if (firstToken != null && firstToken.kind == Tokens.PREPROCESSOR_NEEDED) {
             var firstFlag = this.firstFlag;
 
             // Initialize
@@ -106,7 +106,7 @@ export class Preprocessor {
             }
 
             // Make sure blocks are balanced
-            if (!this.peek(TokenKind.END_OF_FILE)) {
+            if (!this.peek(Tokens.END_OF_FILE)) {
                 this.unexpectedToken();
             }
 
@@ -124,28 +124,28 @@ export class Preprocessor {
     // failure. Takes a booleanean flag for whether or not control flow is live in
     // this block.
     scan(isParentLive: boolean): boolean {
-        while (!this.peek(TokenKind.END_OF_FILE) &&
-        !this.peek(TokenKind.PREPROCESSOR_ELIF) &&
-        !this.peek(TokenKind.PREPROCESSOR_ELSE) &&
-        !this.peek(TokenKind.PREPROCESSOR_ENDIF)) {
+        while (!this.peek(Tokens.END_OF_FILE) &&
+        !this.peek(Tokens.PREPROCESSOR_ELIF) &&
+        !this.peek(Tokens.PREPROCESSOR_ELSE) &&
+        !this.peek(Tokens.PREPROCESSOR_ENDIF)) {
             var previous = this.previous;
             var current = this.current;
 
             // #define or #undef
-            if (this.eat(TokenKind.PREPROCESSOR_DEFINE) || this.eat(TokenKind.PREPROCESSOR_UNDEF)) {
+            if (this.eat(Tokens.PREPROCESSOR_DEFINE) || this.eat(Tokens.PREPROCESSOR_UNDEF)) {
                 // Only process the directive if control flow is live at this point
-                if (this.expect(TokenKind.IDENTIFIER) && isParentLive) {
-                    this.define(this.previous.range.toString(), current.kind == TokenKind.PREPROCESSOR_DEFINE);
+                if (this.expect(Tokens.IDENTIFIER) && isParentLive) {
+                    this.define(this.previous.range.toString(), current.kind == Tokens.PREPROCESSOR_DEFINE);
                 }
 
                 // Help out people trying to use this like C
-                if (this.eat(TokenKind.FALSE) || this.eat(TokenKind.INT32) && this.previous.range.toString() == "0") {
+                if (this.eat(Tokens.FALSE) || this.eat(Tokens.INT32) && this.previous.range.toString() == "0") {
                     this.log.error(this.previous.range, "Use '#undef' to turn a preprocessor flag off");
                 }
 
                 // Scan up to the next newline
-                if (!this.peek(TokenKind.END_OF_FILE) && !this.expect(TokenKind.PREPROCESSOR_NEWLINE)) {
-                    while (!this.eat(TokenKind.PREPROCESSOR_NEWLINE) && !this.eat(TokenKind.END_OF_FILE)) {
+                if (!this.peek(Tokens.END_OF_FILE) && !this.expect(Tokens.PREPROCESSOR_NEWLINE)) {
+                    while (!this.eat(Tokens.PREPROCESSOR_NEWLINE) && !this.eat(Tokens.END_OF_FILE)) {
                         this.advance();
                     }
                 }
@@ -161,27 +161,27 @@ export class Preprocessor {
             }
 
             // #warning or #error
-            else if (this.eat(TokenKind.PREPROCESSOR_WARNING) || this.eat(TokenKind.PREPROCESSOR_ERROR)) {
+            else if (this.eat(Tokens.PREPROCESSOR_WARNING) || this.eat(Tokens.PREPROCESSOR_ERROR)) {
                 var next = this.current;
 
                 // Scan up to the next newline
-                while (!this.peek(TokenKind.PREPROCESSOR_NEWLINE) && !this.peek(TokenKind.END_OF_FILE)) {
+                while (!this.peek(Tokens.PREPROCESSOR_NEWLINE) && !this.peek(Tokens.END_OF_FILE)) {
                     this.advance();
                 }
 
                 // Only process the directive if control flow is live at this point
                 if (isParentLive) {
                     var range = this.current == next ? current.range : spanRanges(next.range, this.previous.range);
-                    this.log.append(range, range.toString(), current.kind == TokenKind.PREPROCESSOR_WARNING ? DiagnosticKind.WARNING : DiagnosticKind.ERROR);
+                    this.log.append(range, range.toString(), current.kind == Tokens.PREPROCESSOR_WARNING ? DiagnosticKind.WARNING : DiagnosticKind.ERROR);
                 }
 
                 // Remove all of these tokens
-                this.eat(TokenKind.PREPROCESSOR_NEWLINE);
+                this.eat(Tokens.PREPROCESSOR_NEWLINE);
                 this.removeTokensFrom(previous);
             }
 
             // #if
-            else if (this.eat(TokenKind.PREPROCESSOR_IF)) {
+            else if (this.eat(Tokens.PREPROCESSOR_IF)) {
                 var isLive = isParentLive;
 
                 // Scan over the entire if-else chain
@@ -189,7 +189,7 @@ export class Preprocessor {
                     var condition = this.parseExpression(Precedence.LOWEST);
 
                     // Reject if the condition is missing
-                    if (condition == PreprocessorValue.ERROR || !this.expect(TokenKind.PREPROCESSOR_NEWLINE)) {
+                    if (condition == PreprocessorValue.ERROR || !this.expect(Tokens.PREPROCESSOR_NEWLINE)) {
                         return false;
                     }
 
@@ -215,13 +215,13 @@ export class Preprocessor {
                     previous = this.previous;
 
                     // #elif
-                    if (this.eat(TokenKind.PREPROCESSOR_ELIF)) {
+                    if (this.eat(Tokens.PREPROCESSOR_ELIF)) {
                         continue;
                     }
 
                     // #else
-                    if (this.eat(TokenKind.PREPROCESSOR_ELSE)) {
-                        if (!this.expect(TokenKind.PREPROCESSOR_NEWLINE)) {
+                    if (this.eat(Tokens.PREPROCESSOR_ELSE)) {
+                        if (!this.expect(Tokens.PREPROCESSOR_NEWLINE)) {
                             return false;
                         }
 
@@ -245,7 +245,7 @@ export class Preprocessor {
 
                 // All if-else chains end with an #endif
                 previous = this.previous;
-                if (!this.expect(TokenKind.PREPROCESSOR_ENDIF) || !this.peek(TokenKind.END_OF_FILE) && !this.expect(TokenKind.PREPROCESSOR_NEWLINE)) {
+                if (!this.expect(Tokens.PREPROCESSOR_ENDIF) || !this.peek(Tokens.END_OF_FILE) && !this.expect(Tokens.PREPROCESSOR_NEWLINE)) {
                     return false;
                 }
                 this.removeTokensFrom(previous);
@@ -266,15 +266,15 @@ export class Preprocessor {
         var start = this.current;
 
         // true or false
-        if (this.eat(TokenKind.TRUE)) return PreprocessorValue.TRUE;
-        if (this.eat(TokenKind.FALSE)) return PreprocessorValue.FALSE;
+        if (this.eat(Tokens.TRUE)) return PreprocessorValue.TRUE;
+        if (this.eat(Tokens.FALSE)) return PreprocessorValue.FALSE;
 
         // Identifier
-        if (this.eat(TokenKind.IDENTIFIER)) {
+        if (this.eat(Tokens.IDENTIFIER)) {
             var name = this.previous.range.toString();
 
             // Recover from a C-style define operator
-            if (this.peek(TokenKind.LEFT_PARENTHESIS) && name == "defined") {
+            if (this.peek(Tokens.LEFT_PARENTHESIS) && name == "defined") {
                 isDefinedOperator = true;
             }
 
@@ -285,24 +285,24 @@ export class Preprocessor {
         }
 
         // !
-        if (this.eat(TokenKind.NOT)) {
+        if (this.eat(Tokens.NOT)) {
             var value = this.parseExpression(Precedence.UNARY_PREFIX);
             if (value == PreprocessorValue.ERROR) return PreprocessorValue.ERROR;
             return value == PreprocessorValue.TRUE ? PreprocessorValue.FALSE : PreprocessorValue.TRUE;
         }
 
         // Group
-        if (this.eat(TokenKind.LEFT_PARENTHESIS)) {
+        if (this.eat(Tokens.LEFT_PARENTHESIS)) {
             let first = this.current;
             let value = this.parseExpression(Precedence.LOWEST);
-            if (value == PreprocessorValue.ERROR || !this.expect(TokenKind.RIGHT_PARENTHESIS)) {
+            if (value == PreprocessorValue.ERROR || !this.expect(Tokens.RIGHT_PARENTHESIS)) {
                 return PreprocessorValue.ERROR;
             }
 
             // Recover from a C-style define operator
             if (isDefinedOperator) {
                 let errorMessage = "There is no 'defined' operator";
-                if (first.kind == TokenKind.IDENTIFIER && this.previous == first.next) {
+                if (first.kind == Tokens.IDENTIFIER && this.previous == first.next) {
                     errorMessage += " (just use '" + first.range.toString() + "' instead)";
                 }
                 this.log.error(spanRanges(start.range, this.previous.range), errorMessage);
@@ -312,7 +312,7 @@ export class Preprocessor {
         }
 
         // Recover from a C-style boolean
-        if (this.eat(TokenKind.INT32)) {
+        if (this.eat(Tokens.INT32)) {
             let isTrue = this.previous.range.toString() != "0";
             this.log.error(
                 this.previous.range,
@@ -329,30 +329,30 @@ export class Preprocessor {
         var operator = this.current.kind;
 
         // == or !=
-        if (precedence < Precedence.EQUAL && (this.eat(TokenKind.EQUAL) || this.eat(TokenKind.NOT_EQUAL))) {
+        if (precedence < Precedence.EQUAL && (this.eat(Tokens.EQUAL) || this.eat(Tokens.NOT_EQUAL))) {
             var right = this.parseExpression(Precedence.EQUAL);
             if (right == PreprocessorValue.ERROR) return PreprocessorValue.ERROR;
-            return (operator == TokenKind.EQUAL) == (left == right) ? PreprocessorValue.TRUE : PreprocessorValue.FALSE;
+            return (operator == Tokens.EQUAL) == (left == right) ? PreprocessorValue.TRUE : PreprocessorValue.FALSE;
         }
 
         // &&
-        if (precedence < Precedence.LOGICAL_AND && this.eat(TokenKind.LOGICAL_AND)) {
+        if (precedence < Precedence.LOGICAL_AND && this.eat(Tokens.LOGICAL_AND)) {
             var right = this.parseExpression(Precedence.LOGICAL_AND);
             if (right == PreprocessorValue.ERROR) return PreprocessorValue.ERROR;
             return (left == PreprocessorValue.TRUE && right == PreprocessorValue.TRUE) ? PreprocessorValue.TRUE : PreprocessorValue.FALSE;
         }
 
         // ||
-        if (precedence < Precedence.LOGICAL_OR && this.eat(TokenKind.LOGICAL_OR)) {
+        if (precedence < Precedence.LOGICAL_OR && this.eat(Tokens.LOGICAL_OR)) {
             var right = this.parseExpression(Precedence.LOGICAL_OR);
             if (right == PreprocessorValue.ERROR) return PreprocessorValue.ERROR;
             return (left == PreprocessorValue.TRUE || right == PreprocessorValue.TRUE) ? PreprocessorValue.TRUE : PreprocessorValue.FALSE;
         }
 
         // Hook
-        if (precedence == Precedence.LOWEST && this.eat(TokenKind.QUESTION_MARK)) {
+        if (precedence == Precedence.LOWEST && this.eat(Tokens.QUESTION_MARK)) {
             var middle = this.parseExpression(Precedence.LOWEST);
-            if (middle == PreprocessorValue.ERROR || !this.expect(TokenKind.COLON)) {
+            if (middle == PreprocessorValue.ERROR || !this.expect(Tokens.COLON)) {
                 return PreprocessorValue.ERROR;
             }
 
