@@ -550,7 +550,7 @@ export class Node {
     }
 
     createEmptyConstructor(): Node {
-        let node = new XFunction("constructor");
+        let node = createFunction("constructor")
         node.appendChild(createName(this.symbol.name));
         let body = createBlock();
         node.appendChild(body);
@@ -1099,11 +1099,11 @@ export class Node {
 }
 
 
-export class XFunction extends Node{
-	constructor(name: String){
-		super({kind : NodeKind.FUNCTION,stringValue :name});
-	}
-}
+// export class XFunction extends Node{
+// 	constructor(name: String){
+// 		super({kind : NodeKind.FUNCTION,stringValue :name});
+// 	}
+// }
 
 export function createNew(type: Node): Node {
     assert(isExpression(type));
@@ -1428,10 +1428,10 @@ export function createVariable(name: string, type: Node, value: Node): Node {
 }
 
 export function createFunction(name: string): Node {
-	let node = new XFunction(name);
-	// let node = new Node({kind : NodeKind.FUNCTION,stringValue :name});
-    // node.kind = NodeKind.FUNCTION;
-    // node.stringValue = name;
+	// let node = new XFunction(name);
+	let node = new Node();//{kind : NodeKind.FUNCTION,stringValue :name});
+    node.kind = NodeKind.FUNCTION;
+    node.stringValue = name;
     return node;
 }
 

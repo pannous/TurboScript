@@ -3,7 +3,7 @@ import {assert} from "../../utils/assert";
 /**
  * Author: Nidin Vinayakan
  */
-export enum TokenKind {
+export enum Tokens {
     END_OF_FILE,
         // Literals
     CHARACTER,
@@ -107,19 +107,19 @@ export enum TokenKind {
     PREPROCESSOR_WARNING,
 }
 
-export function isKeyword(kind: TokenKind): boolean {
-    return kind >= TokenKind.ALIGNOF && kind <= TokenKind.WHILE;
+export function isKeyword(kind: Tokens): boolean {
+    return kind >= Tokens.ALIGNOF && kind <= Tokens.WHILE;
 }
 
 export class Token {
-    kind: TokenKind;
+    kind: Tokens;
     range: SourceRange;
     next: Token;
     name: String;
     type: String;
 }
 
-export function splitToken(first: Token, firstKind: TokenKind, secondKind: TokenKind): void {
+export function splitToken(first: Token, firstKind: Tokens, secondKind: Tokens): void {
     var range = first.range;
     assert(range.end - range.start >= 2);
 
@@ -133,108 +133,108 @@ export function splitToken(first: Token, firstKind: TokenKind, secondKind: Token
     range.end = range.start + 1;
 }
 
-export function tokenToString(token: TokenKind): string {
-    if (token == TokenKind.END_OF_FILE) return "end of file";
+export function tokenToString(token: Tokens): string {
+    if (token == Tokens.END_OF_FILE) return "end of file";
 
     // Literals
-    if (token == TokenKind.CHARACTER) return "character literal";
-    if (token == TokenKind.IDENTIFIER) return "identifier";
-    if (token == TokenKind.INT32) return "integer32 literal";
-    if (token == TokenKind.INT64) return "integer64 literal";
-    if (token == TokenKind.FLOAT32) return "float32 literal";
-    if (token == TokenKind.FLOAT64) return "float64 literal";
-    if (token == TokenKind.STRING) return "string literal";
-    if (token == TokenKind.ARRAY) return "array literal";
+    if (token == Tokens.CHARACTER) return "character literal";
+    if (token == Tokens.IDENTIFIER) return "identifier";
+    if (token == Tokens.INT32) return "integer32 literal";
+    if (token == Tokens.INT64) return "integer64 literal";
+    if (token == Tokens.FLOAT32) return "float32 literal";
+    if (token == Tokens.FLOAT64) return "float64 literal";
+    if (token == Tokens.STRING) return "string literal";
+    if (token == Tokens.ARRAY) return "array literal";
 
     // Punctuation
-    if (token == TokenKind.ASSIGN) return "'='";
-    if (token == TokenKind.BITWISE_AND) return "'&'";
-    if (token == TokenKind.BITWISE_OR) return "'|'";
-    if (token == TokenKind.BITWISE_XOR) return "'^'";
-    if (token == TokenKind.COLON) return "':'";
-    if (token == TokenKind.COMMA) return "','";
-    if (token == TokenKind.COMPLEMENT) return "'~'";
-    if (token == TokenKind.DIVIDE) return "'/'";
-    if (token == TokenKind.DOT) return "'.'";
-    if (token == TokenKind.EQUAL) return "'=='";
-    if (token == TokenKind.EXPONENT) return "'**'";
-    if (token == TokenKind.GREATER_THAN) return "'>'";
-    if (token == TokenKind.GREATER_THAN_EQUAL) return "'>='";
-    if (token == TokenKind.LEFT_BRACE) return "'{'";
-    if (token == TokenKind.LEFT_BRACKET) return "'['";
-    if (token == TokenKind.LEFT_PARENTHESIS) return "'('";
-    if (token == TokenKind.LESS_THAN) return "'<'";
-    if (token == TokenKind.LESS_THAN_EQUAL) return "'<='";
-    if (token == TokenKind.LOGICAL_AND) return "'&&'";
-    if (token == TokenKind.LOGICAL_OR) return "'||'";
-    if (token == TokenKind.MINUS) return "'-'";
-    if (token == TokenKind.MINUS_MINUS) return "'--'";
-    if (token == TokenKind.MULTIPLY) return "'*'";
-    if (token == TokenKind.NOT) return "'!'";
-    if (token == TokenKind.NOT_EQUAL) return "'!='";
-    if (token == TokenKind.PLUS) return "'+'";
-    if (token == TokenKind.PLUS_PLUS) return "'++'";
-    if (token == TokenKind.QUESTION_MARK) return "'?'";
-    if (token == TokenKind.REMAINDER) return "'%'";
-    if (token == TokenKind.RIGHT_BRACE) return "'}'";
-    if (token == TokenKind.RIGHT_BRACKET) return "']'";
-    if (token == TokenKind.RIGHT_PARENTHESIS) return "')'";
-    if (token == TokenKind.SEMICOLON) return "';'";
-    if (token == TokenKind.SHIFT_LEFT) return "'<<'";
-    if (token == TokenKind.SHIFT_RIGHT) return "'>>'";
+    if (token == Tokens.ASSIGN) return "'='";
+    if (token == Tokens.BITWISE_AND) return "'&'";
+    if (token == Tokens.BITWISE_OR) return "'|'";
+    if (token == Tokens.BITWISE_XOR) return "'^'";
+    if (token == Tokens.COLON) return "':'";
+    if (token == Tokens.COMMA) return "','";
+    if (token == Tokens.COMPLEMENT) return "'~'";
+    if (token == Tokens.DIVIDE) return "'/'";
+    if (token == Tokens.DOT) return "'.'";
+    if (token == Tokens.EQUAL) return "'=='";
+    if (token == Tokens.EXPONENT) return "'**'";
+    if (token == Tokens.GREATER_THAN) return "'>'";
+    if (token == Tokens.GREATER_THAN_EQUAL) return "'>='";
+    if (token == Tokens.LEFT_BRACE) return "'{'";
+    if (token == Tokens.LEFT_BRACKET) return "'['";
+    if (token == Tokens.LEFT_PARENTHESIS) return "'('";
+    if (token == Tokens.LESS_THAN) return "'<'";
+    if (token == Tokens.LESS_THAN_EQUAL) return "'<='";
+    if (token == Tokens.LOGICAL_AND) return "'&&'";
+    if (token == Tokens.LOGICAL_OR) return "'||'";
+    if (token == Tokens.MINUS) return "'-'";
+    if (token == Tokens.MINUS_MINUS) return "'--'";
+    if (token == Tokens.MULTIPLY) return "'*'";
+    if (token == Tokens.NOT) return "'!'";
+    if (token == Tokens.NOT_EQUAL) return "'!='";
+    if (token == Tokens.PLUS) return "'+'";
+    if (token == Tokens.PLUS_PLUS) return "'++'";
+    if (token == Tokens.QUESTION_MARK) return "'?'";
+    if (token == Tokens.REMAINDER) return "'%'";
+    if (token == Tokens.RIGHT_BRACE) return "'}'";
+    if (token == Tokens.RIGHT_BRACKET) return "']'";
+    if (token == Tokens.RIGHT_PARENTHESIS) return "')'";
+    if (token == Tokens.SEMICOLON) return "';'";
+    if (token == Tokens.SHIFT_LEFT) return "'<<'";
+    if (token == Tokens.SHIFT_RIGHT) return "'>>'";
 
     // Keywords
-    if (token == TokenKind.FROM) return "'from'";
-    if (token == TokenKind.ALIGNOF) return "'alignof'";
-    if (token == TokenKind.AS) return "'as'";
-    if (token == TokenKind.BREAK) return "'break'";
-    if (token == TokenKind.MODULE) return "'namespace'";
-    if (token == TokenKind.CLASS) return "'class'";
-    if (token == TokenKind.CONST) return "'const'";
-    if (token == TokenKind.CONTINUE) return "'continue'";
-    if (token == TokenKind.DECLARE) return "'declare'";
-    if (token == TokenKind.ELSE) return "'else'";
-    if (token == TokenKind.ENUM) return "'enum'";
-    if (token == TokenKind.EXPORT) return "'export'";
-    if (token == TokenKind.EXTENDS) return "'extends'";
-    if (token == TokenKind.FALSE) return "'false'";
-    if (token == TokenKind.FUNCTION) return "'function'";
-    if (token == TokenKind.ANYFUNC) return "'anyfunc'";
-    if (token == TokenKind.IF) return "'if'";
-    if (token == TokenKind.IMPLEMENTS) return "'implements'";
-    if (token == TokenKind.IMPORT) return "'import'";
-    if (token == TokenKind.LET) return "'let'";
-    if (token == TokenKind.NEW) return "'new'";
-    if (token == TokenKind.DELETE) return "'delete'";
-    if (token == TokenKind.NULL) return "'null'";
-    if (token == TokenKind.UNDEFINED) return "'undefined'";
-    if (token == TokenKind.OPERATOR) return "'operator'";
-    if (token == TokenKind.PRIVATE) return "'private'";
-    if (token == TokenKind.PROTECTED) return "'protected'";
-    if (token == TokenKind.PUBLIC) return "'public'";
-    if (token == TokenKind.RETURN) return "'return'";
-    if (token == TokenKind.SIZEOF) return "'sizeof'";
-    if (token == TokenKind.STATIC) return "'static'";
-    if (token == TokenKind.THIS) return "'this'";
-    if (token == TokenKind.TRUE) return "'true'";
-    if (token == TokenKind.UNSAFE) return "'unsafe'";
-    if (token == TokenKind.JAVASCRIPT) return "'@JS'";
-    if (token == TokenKind.START) return "'@start'";
-    if (token == TokenKind.VIRTUAL) return "'@virtual'";
-    if (token == TokenKind.VAR) return "'var'";
-    if (token == TokenKind.WHILE) return "'while'";
-    if (token == TokenKind.FOR) return "'for'";
+    if (token == Tokens.FROM) return "'from'";
+    if (token == Tokens.ALIGNOF) return "'alignof'";
+    if (token == Tokens.AS) return "'as'";
+    if (token == Tokens.BREAK) return "'break'";
+    if (token == Tokens.MODULE) return "'namespace'";
+    if (token == Tokens.CLASS) return "'class'";
+    if (token == Tokens.CONST) return "'const'";
+    if (token == Tokens.CONTINUE) return "'continue'";
+    if (token == Tokens.DECLARE) return "'declare'";
+    if (token == Tokens.ELSE) return "'else'";
+    if (token == Tokens.ENUM) return "'enum'";
+    if (token == Tokens.EXPORT) return "'export'";
+    if (token == Tokens.EXTENDS) return "'extends'";
+    if (token == Tokens.FALSE) return "'false'";
+    if (token == Tokens.FUNCTION) return "'function'";
+    if (token == Tokens.ANYFUNC) return "'anyfunc'";
+    if (token == Tokens.IF) return "'if'";
+    if (token == Tokens.IMPLEMENTS) return "'implements'";
+    if (token == Tokens.IMPORT) return "'import'";
+    if (token == Tokens.LET) return "'let'";
+    if (token == Tokens.NEW) return "'new'";
+    if (token == Tokens.DELETE) return "'delete'";
+    if (token == Tokens.NULL) return "'null'";
+    if (token == Tokens.UNDEFINED) return "'undefined'";
+    if (token == Tokens.OPERATOR) return "'operator'";
+    if (token == Tokens.PRIVATE) return "'private'";
+    if (token == Tokens.PROTECTED) return "'protected'";
+    if (token == Tokens.PUBLIC) return "'public'";
+    if (token == Tokens.RETURN) return "'return'";
+    if (token == Tokens.SIZEOF) return "'sizeof'";
+    if (token == Tokens.STATIC) return "'static'";
+    if (token == Tokens.THIS) return "'this'";
+    if (token == Tokens.TRUE) return "'true'";
+    if (token == Tokens.UNSAFE) return "'unsafe'";
+    if (token == Tokens.JAVASCRIPT) return "'@JS'";
+    if (token == Tokens.START) return "'@start'";
+    if (token == Tokens.VIRTUAL) return "'@virtual'";
+    if (token == Tokens.VAR) return "'var'";
+    if (token == Tokens.WHILE) return "'while'";
+    if (token == Tokens.FOR) return "'for'";
 
     // Preprocessor
-    if (token == TokenKind.PREPROCESSOR_DEFINE) return "'#define'";
-    if (token == TokenKind.PREPROCESSOR_ELIF) return "'#elif'";
-    if (token == TokenKind.PREPROCESSOR_ELSE) return "'#else'";
-    if (token == TokenKind.PREPROCESSOR_ENDIF) return "'#endif'";
-    if (token == TokenKind.PREPROCESSOR_ERROR) return "'#error'";
-    if (token == TokenKind.PREPROCESSOR_IF) return "'#if'";
-    if (token == TokenKind.PREPROCESSOR_NEWLINE) return "newline";
-    if (token == TokenKind.PREPROCESSOR_UNDEF) return "'#undef'";
-    if (token == TokenKind.PREPROCESSOR_WARNING) return "'#warning'";
+    if (token == Tokens.PREPROCESSOR_DEFINE) return "'#define'";
+    if (token == Tokens.PREPROCESSOR_ELIF) return "'#elif'";
+    if (token == Tokens.PREPROCESSOR_ELSE) return "'#else'";
+    if (token == Tokens.PREPROCESSOR_ENDIF) return "'#endif'";
+    if (token == Tokens.PREPROCESSOR_ERROR) return "'#error'";
+    if (token == Tokens.PREPROCESSOR_IF) return "'#if'";
+    if (token == Tokens.PREPROCESSOR_NEWLINE) return "newline";
+    if (token == Tokens.PREPROCESSOR_UNDEF) return "'#undef'";
+    if (token == Tokens.PREPROCESSOR_WARNING) return "'#warning'";
 
     assert(false);
     return null;
@@ -279,7 +279,7 @@ export function tokenize(source: Source, log: Log): Token {
             continue;
         }
 
-        var kind = TokenKind.END_OF_FILE;
+        var kind = Tokens.END_OF_FILE;
 
         // Newline
         if (c == '\n') {
@@ -288,13 +288,13 @@ export function tokenize(source: Source, log: Log): Token {
             }
 
             // Preprocessor commands all end in a newline
-            kind = TokenKind.PREPROCESSOR_NEWLINE;
+            kind = Tokens.PREPROCESSOR_NEWLINE;
             wantNewline = false;
         }
 
         // Identifier
         else if (isAlpha(c) || c == "@") {
-            kind = TokenKind.IDENTIFIER;
+            kind = Tokens.IDENTIFIER;
 
             while (i < limit && (isAlpha(contents[i]) || isNumber(contents[i]))) {
                 i = i + 1;
@@ -306,80 +306,80 @@ export function tokenize(source: Source, log: Log): Token {
                 var text = contents.slice(start, i);
 
                 if (length == 2) {
-                    if (text == "as") kind = TokenKind.AS;
-                    else if (text == "if") kind = TokenKind.IF;
-                    else if (text == "or") kind = TokenKind.IF;
-                    else if (text == "is") kind = TokenKind.EQUAL; // todo
-                    else if (text == "to") kind = TokenKind.FUNCTION;
+                    if (text == "as") kind = Tokens.AS;
+                    else if (text == "if") kind = Tokens.IF;
+                    else if (text == "or") kind = Tokens.IF;
+                    else if (text == "is") kind = Tokens.EQUAL; // todo
+                    else if (text == "to") kind = Tokens.FUNCTION;
 
                     // else if (text == "is") kind = TokenKind.ASSIGN;// todo
                 }
 
                 else if (length == 3) {
-                    if (text == "let") kind = TokenKind.LET;
-                    else if (text == "def") kind = TokenKind.FUNCTION;
-                    else if (text == "new") kind = TokenKind.NEW;
-                    else if (text == "var") kind = TokenKind.VAR;
-                    else if (text == "val") kind = TokenKind.VAR;
-                    else if (text == "for") kind = TokenKind.FOR;
-                    else if (text == "and") kind = TokenKind.LOGICAL_AND;
-                    else if (text == "not") kind = TokenKind.NOT;
-                    else if (text == "nil") kind = TokenKind.NULL;
-                    else if (text == "nul") kind = TokenKind.NULL;
-                    else if (text == "@JS") kind = TokenKind.JAVASCRIPT;
+                    if (text == "let") kind = Tokens.LET;
+                    else if (text == "def") kind = Tokens.FUNCTION;
+                    else if (text == "new") kind = Tokens.NEW;
+                    else if (text == "var") kind = Tokens.VAR;
+                    else if (text == "val") kind = Tokens.VAR;
+                    else if (text == "for") kind = Tokens.FOR;
+                    else if (text == "and") kind = Tokens.LOGICAL_AND;
+                    else if (text == "not") kind = Tokens.NOT;
+                    else if (text == "nil") kind = Tokens.NULL;
+                    else if (text == "nul") kind = Tokens.NULL;
+                    else if (text == "@JS") kind = Tokens.JAVASCRIPT;
                 }
 
                 else if (length == 4) {
-                    if (text == "else") kind = TokenKind.ELSE;
-                    else if (text == "enum") kind = TokenKind.ENUM;
-                    else if (text == "null") kind = TokenKind.NULL;
-                    else if (text == "Null") kind = TokenKind.NULL;
-                    else if (text == "none") kind = TokenKind.NULL;
-                    else if (text == "None") kind = TokenKind.NULL;
-                    else if (text == "this") kind = TokenKind.THIS;
-                    else if (text == "self") kind = TokenKind.THIS;
-                    else if (text == "True") kind = TokenKind.TRUE;
-                    else if (text == "true") kind = TokenKind.TRUE;
-                    else if (text == "from") kind = TokenKind.FROM;
+                    if (text == "else") kind = Tokens.ELSE;
+                    else if (text == "enum") kind = Tokens.ENUM;
+                    else if (text == "null") kind = Tokens.NULL;
+                    else if (text == "Null") kind = Tokens.NULL;
+                    else if (text == "none") kind = Tokens.NULL;
+                    else if (text == "None") kind = Tokens.NULL;
+                    else if (text == "this") kind = Tokens.THIS;
+                    else if (text == "self") kind = Tokens.THIS;
+                    else if (text == "True") kind = Tokens.TRUE;
+                    else if (text == "true") kind = Tokens.TRUE;
+                    else if (text == "from") kind = Tokens.FROM;
                 }
 
                 else if (length == 5) {
-                    if (text == "break") kind = TokenKind.BREAK;
-                    else if (text == "class") kind = TokenKind.CLASS;
-                    else if (text == "const") kind = TokenKind.CONST;
-                    else if (text == "false") kind = TokenKind.FALSE;
-                    else if (text == "False") kind = TokenKind.FALSE;
-                    else if (text == "while") kind = TokenKind.WHILE;
+                    if (text == "break") kind = Tokens.BREAK;
+                    else if (text == "class") kind = Tokens.CLASS;
+                    else if (text == "const") kind = Tokens.CONST;
+                    else if (text == "false") kind = Tokens.FALSE;
+                    else if (text == "False") kind = Tokens.FALSE;
+                    else if (text == "while") kind = Tokens.WHILE;
                 }
 
                 else if (length == 6) {
-                    if (text == "export") kind = TokenKind.EXPORT;
-                    else if (text == "module") kind = TokenKind.MODULE;
-                    else if (text == "import") kind = TokenKind.IMPORT;
-                    else if (text == "public") kind = TokenKind.PUBLIC;
-                    else if (text == "return") kind = TokenKind.RETURN;
-                    else if (text == "sizeof") kind = TokenKind.SIZEOF;
-                    else if (text == "static") kind = TokenKind.STATIC;
-                    else if (text == "unsafe") kind = TokenKind.UNSAFE;
-                    else if (text == "@start") kind = TokenKind.START;// ?
-                    else if (text == "delete") kind = TokenKind.DELETE;
+                    if (text == "export") kind = Tokens.EXPORT;
+                    else if (text == "module") kind = Tokens.MODULE;
+                    else if (text == "import") kind = Tokens.IMPORT;
+                    else if (text == "public") kind = Tokens.PUBLIC;
+                    else if (text == "return") kind = Tokens.RETURN;
+                    else if (text == "sizeof") kind = Tokens.SIZEOF;
+                    else if (text == "static") kind = Tokens.STATIC;
+                    else if (text == "unsafe") kind = Tokens.UNSAFE;
+                    else if (text == "@start") kind = Tokens.START;// ?
+                    else if (text == "delete") kind = Tokens.DELETE;
                 }
 
                 else if (length == 7) {
-                    if (text == "alignof") kind = TokenKind.ALIGNOF;// ?
-                    else if (text == "declare") kind = TokenKind.DECLARE;
-                    else if (text == "extends") kind = TokenKind.EXTENDS;
-                    else if (text == "private") kind = TokenKind.PRIVATE;
-                    else if (text == "anyfunc") kind = TokenKind.ANYFUNC;// ?
+                    if (text == "alignof") kind = Tokens.ALIGNOF;// ?
+                    else if (text == "declare") kind = Tokens.DECLARE;
+                    else if (text == "extends") kind = Tokens.EXTENDS;
+                    else if (text == "private") kind = Tokens.PRIVATE;
+                    else if (text == "anyfunc") kind = Tokens.ANYFUNC;// ?
                 }
 
                 else {
-                    if (text == "continue") kind = TokenKind.CONTINUE;
-                    else if (text == "@virtual") kind = TokenKind.VIRTUAL;
-                    else if (text == "function") kind = TokenKind.FUNCTION;
-                    else if (text == "constant") kind = TokenKind.CONST;
-                    else if (text == "implements") kind = TokenKind.IMPLEMENTS;
-                    else if (text == "protected") kind = TokenKind.PROTECTED;
+                    if (text == "continue") kind = Tokens.CONTINUE;
+                    else if (text == "@virtual") kind = Tokens.VIRTUAL;
+                    else if (text == "function") kind = Tokens.FUNCTION;
+                    else if (text == "constant") kind = Tokens.CONST;
+                    else if (text == "implements") kind = Tokens.IMPLEMENTS;
+                    else if (text == "protected") kind = Tokens.PROTECTED;
                 }
             }
         }
@@ -428,10 +428,10 @@ export function tokenize(source: Source, log: Log): Token {
                 }
 
                 if (contents[i] === "f") {
-                    kind = TokenKind.FLOAT32;
+                    kind = Tokens.FLOAT32;
                     i = i + 1;
                 } else {
-                    kind = isFloat ? TokenKind.FLOAT64 : TokenKind.INT32;
+                    kind = isFloat ? Tokens.FLOAT64 : Tokens.INT32;
                 }
 
                 // Extra letters after the end is an error
@@ -470,14 +470,14 @@ export function tokenize(source: Source, log: Log): Token {
 
                     // End the string with a matching quote character
                     if (next == c) {
-                        kind = c == '\'' ? TokenKind.CHARACTER : TokenKind.STRING;
+                        kind = c == '\'' ? Tokens.CHARACTER : Tokens.STRING;
                         break;
                     }
                 }
             }
 
             // It's an error if we didn't find a matching quote character
-            if (kind == TokenKind.END_OF_FILE) {
+            if (kind == Tokens.END_OF_FILE) {
                 log.error(createRange(source, start, i),
                     c == '\'' ? "Unterminated character literal" :
                         c == '`' ? "Unterminated template literal" :
@@ -487,34 +487,34 @@ export function tokenize(source: Source, log: Log): Token {
         }
 
         // Operators
-        else if (c == '%') kind = TokenKind.REMAINDER;
-        else if (c == '(') kind = TokenKind.LEFT_PARENTHESIS;
-        else if (c == ')') kind = TokenKind.RIGHT_PARENTHESIS;
-        else if (c == ',') kind = TokenKind.COMMA;
-        else if (c == '.') kind = TokenKind.DOT;
-        else if (c == ':') kind = TokenKind.COLON;
-        else if (c == ';') kind = TokenKind.SEMICOLON;
-        else if (c == '?') kind = TokenKind.QUESTION_MARK;
-        else if (c == '[') kind = TokenKind.LEFT_BRACKET;
-        else if (c == ']') kind = TokenKind.RIGHT_BRACKET;
-        else if (c == '^') kind = TokenKind.BITWISE_XOR;
-        else if (c == '{') kind = TokenKind.LEFT_BRACE;
-        else if (c == '}') kind = TokenKind.RIGHT_BRACE;
-        else if (c == '~') kind = TokenKind.COMPLEMENT;
+        else if (c == '%') kind = Tokens.REMAINDER;
+        else if (c == '(') kind = Tokens.LEFT_PARENTHESIS;
+        else if (c == ')') kind = Tokens.RIGHT_PARENTHESIS;
+        else if (c == ',') kind = Tokens.COMMA;
+        else if (c == '.') kind = Tokens.DOT;
+        else if (c == ':') kind = Tokens.COLON;
+        else if (c == ';') kind = Tokens.SEMICOLON;
+        else if (c == '?') kind = Tokens.QUESTION_MARK;
+        else if (c == '[') kind = Tokens.LEFT_BRACKET;
+        else if (c == ']') kind = Tokens.RIGHT_BRACKET;
+        else if (c == '^') kind = Tokens.BITWISE_XOR;
+        else if (c == '{') kind = Tokens.LEFT_BRACE;
+        else if (c == '}') kind = Tokens.RIGHT_BRACE;
+        else if (c == '~') kind = Tokens.COMPLEMENT;
 
         // * or **
         else if (c == '*') {
-            kind = TokenKind.MULTIPLY;
+            kind = Tokens.MULTIPLY;
 
             if (i < limit && contents[i] == '*') {
-                kind = TokenKind.EXPONENT;
+                kind = Tokens.EXPONENT;
                 i = i + 1;
             }
         }
 
         // / or // or /*
         else if (c == '/') {
-            kind = TokenKind.DIVIDE;
+            kind = Tokens.DIVIDE;
 
             // Single-line comments
             if (i < limit && contents[i] == '/') {
@@ -555,10 +555,10 @@ export function tokenize(source: Source, log: Log): Token {
 
         // ! or !=
         else if (c == '!') {
-            kind = TokenKind.NOT;
+            kind = Tokens.NOT;
 
             if (i < limit && contents[i] == '=') {
-                kind = TokenKind.NOT_EQUAL;
+                kind = Tokens.NOT_EQUAL;
                 i = i + 1;
 
                 // Recover from !==
@@ -571,10 +571,10 @@ export function tokenize(source: Source, log: Log): Token {
 
         // = or ==
         else if (c == '=') {
-            kind = TokenKind.ASSIGN;
+            kind = Tokens.ASSIGN;
 
             if (i < limit && contents[i] == '=') {
-                kind = TokenKind.EQUAL;
+                kind = Tokens.EQUAL;
                 i = i + 1;
 
                 // Recover from ===
@@ -587,58 +587,58 @@ export function tokenize(source: Source, log: Log): Token {
 
         // + or ++
         else if (c == '+') {
-            kind = TokenKind.PLUS;
+            kind = Tokens.PLUS;
 
             if (i < limit && contents[i] == '+') {
-                kind = TokenKind.PLUS_PLUS;
+                kind = Tokens.PLUS_PLUS;
                 i = i + 1;
             }
         }
 
         // - or --
         else if (c == '-') {
-            kind = TokenKind.MINUS;
+            kind = Tokens.MINUS;
 
             if (i < limit && contents[i] == '-') {
-                kind = TokenKind.MINUS_MINUS;
+                kind = Tokens.MINUS_MINUS;
                 i = i + 1;
             }
         }
 
         // & or &&
         else if (c == '&') {
-            kind = TokenKind.BITWISE_AND;
+            kind = Tokens.BITWISE_AND;
 
             if (i < limit && contents[i] == '&') {
-                kind = TokenKind.LOGICAL_AND;
+                kind = Tokens.LOGICAL_AND;
                 i = i + 1;
             }
         }
 
         // | or ||
         else if (c == '|') {
-            kind = TokenKind.BITWISE_OR;
+            kind = Tokens.BITWISE_OR;
 
             if (i < limit && contents[i] == '|') {
-                kind = TokenKind.LOGICAL_OR;
+                kind = Tokens.LOGICAL_OR;
                 i = i + 1;
             }
         }
 
         // < or << or <=
         else if (c == '<') {
-            kind = TokenKind.LESS_THAN;
+            kind = Tokens.LESS_THAN;
 
             if (i < limit) {
                 c = contents[i];
 
                 if (c == '<') {
-                    kind = TokenKind.SHIFT_LEFT;
+                    kind = Tokens.SHIFT_LEFT;
                     i = i + 1;
                 }
 
                 else if (c == '=') {
-                    kind = TokenKind.LESS_THAN_EQUAL;
+                    kind = Tokens.LESS_THAN_EQUAL;
                     i = i + 1;
                 }
             }
@@ -646,18 +646,18 @@ export function tokenize(source: Source, log: Log): Token {
 
         // > or >> or >=
         else if (c == '>') {
-            kind = TokenKind.GREATER_THAN;
+            kind = Tokens.GREATER_THAN;
 
             if (i < limit) {
                 c = contents[i];
 
                 if (c == '>') {
-                    kind = TokenKind.SHIFT_RIGHT;
+                    kind = Tokens.SHIFT_RIGHT;
                     i = i + 1;
                 }
 
                 else if (c == '=') {
-                    kind = TokenKind.GREATER_THAN_EQUAL;
+                    kind = Tokens.GREATER_THAN_EQUAL;
                     i = i + 1;
                 }
             }
@@ -670,14 +670,14 @@ export function tokenize(source: Source, log: Log): Token {
 
             var text = contents.slice(start, i);
 
-            if (text == "#define") kind = TokenKind.PREPROCESSOR_DEFINE;
-            else if (text == "#elif") kind = TokenKind.PREPROCESSOR_ELIF;
-            else if (text == "#else") kind = TokenKind.PREPROCESSOR_ELSE;
-            else if (text == "#endif") kind = TokenKind.PREPROCESSOR_ENDIF;
-            else if (text == "#error") kind = TokenKind.PREPROCESSOR_ERROR;
-            else if (text == "#if") kind = TokenKind.PREPROCESSOR_IF;
-            else if (text == "#undef") kind = TokenKind.PREPROCESSOR_UNDEF;
-            else if (text == "#warning") kind = TokenKind.PREPROCESSOR_WARNING;
+            if (text == "#define") kind = Tokens.PREPROCESSOR_DEFINE;
+            else if (text == "#elif") kind = Tokens.PREPROCESSOR_ELIF;
+            else if (text == "#else") kind = Tokens.PREPROCESSOR_ELSE;
+            else if (text == "#endif") kind = Tokens.PREPROCESSOR_ENDIF;
+            else if (text == "#error") kind = Tokens.PREPROCESSOR_ERROR;
+            else if (text == "#if") kind = Tokens.PREPROCESSOR_IF;
+            else if (text == "#undef") kind = Tokens.PREPROCESSOR_UNDEF;
+            else if (text == "#warning") kind = Tokens.PREPROCESSOR_WARNING;
 
             // Allow a shebang at the start of the file
             else if (start == 0 && text == "#" && i < limit && contents[i] == '!') {
@@ -693,26 +693,26 @@ export function tokenize(source: Source, log: Log): Token {
                 // Check for #if typos
                 if (text == "#ifdef") {
                     errorMessage += ", did you mean '#if'?";
-                    kind = TokenKind.PREPROCESSOR_IF;
+                    kind = Tokens.PREPROCESSOR_IF;
                 }
 
                 // Check for #elif typos
                 else if (text == "#elsif" || text == "#elseif") {
                     errorMessage += ", did you mean '#elif'?";
-                    kind = TokenKind.PREPROCESSOR_ELIF;
+                    kind = Tokens.PREPROCESSOR_ELIF;
                 }
 
                 // Check for #endif typos
                 else if (text == "#end") {
                     errorMessage += ", did you mean '#endif'?";
-                    kind = TokenKind.PREPROCESSOR_ENDIF;
+                    kind = Tokens.PREPROCESSOR_ENDIF;
                 }
 
                 log.error(createRange(source, start, i), errorMessage);
             }
 
             // All preprocessor directives must be on a line by themselves
-            if (last != null && last.kind != TokenKind.PREPROCESSOR_NEWLINE) {
+            if (last != null && last.kind != Tokens.PREPROCESSOR_NEWLINE) {
                 let end = last.range.end;
                 let j = i - 1;
                 while (j >= end) {
@@ -732,7 +732,7 @@ export function tokenize(source: Source, log: Log): Token {
 
         let range = createRange(source, start, i);
 
-        if (kind == TokenKind.END_OF_FILE) {
+        if (kind == Tokens.END_OF_FILE) {
             log.error(range, `Syntax error: '${contents.slice(start, start + 1)}'`);
             return null;
         }
@@ -749,7 +749,7 @@ export function tokenize(source: Source, log: Log): Token {
     }
 
     let eof = new Token();
-    eof.kind = TokenKind.END_OF_FILE;
+    eof.kind = Tokens.END_OF_FILE;
     eof.range = createRange(source, limit, limit);
 
     if (first == null) first = eof;
@@ -759,7 +759,7 @@ export function tokenize(source: Source, log: Log): Token {
     // Pass a "flag" for whether the preprocessor is needed back to the caller
     if (needsPreprocessor) {
         let token = new Token();
-        token.kind = TokenKind.PREPROCESSOR_NEEDED;
+        token.kind = Tokens.PREPROCESSOR_NEEDED;
         token.next = first;
         return token;
     }

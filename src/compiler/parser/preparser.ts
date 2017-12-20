@@ -1,6 +1,6 @@
 import {createRange, Log, Source} from "../../utils/log";
 import {Compiler} from "../compiler";
-import {isAlpha, isNumber, TokenKind} from "../scanner/scanner";
+import {isAlpha, isNumber, Tokens} from "../scanner/scanner";
 import {FileSystem} from "../../utils/filesystem";
 import {Terminal} from "../../utils/terminal";
 import {BinaryImporter} from "../../importer/binary-importer";
@@ -34,7 +34,7 @@ export function preparse(source: Source, compiler: Compiler, log: Log): boolean 
             continue;
         }
 
-        let kind = TokenKind.END_OF_FILE;
+        let kind = Tokens.END_OF_FILE;
 
         // Newline
         if (c == '\n') {
@@ -116,7 +116,7 @@ export function preparse(source: Source, compiler: Compiler, log: Log): boolean 
                 if (next == "," || end) {
                     let _import = contents.slice(nextImportIndex + 1, i - 1);
                     imports.push(_import);
-                    kind = TokenKind.IMPORT;
+                    kind = Tokens.IMPORT;
                     if (end) {
                         break;
                     }
@@ -159,7 +159,7 @@ export function preparse(source: Source, compiler: Compiler, log: Log): boolean 
                         } else {
                             return false;
                         }
-                        kind = c == '\'' ? TokenKind.CHARACTER : TokenKind.STRING;
+                        kind = c == '\'' ? Tokens.CHARACTER : Tokens.STRING;
                         break;
                     }
                 }
