@@ -1,7 +1,7 @@
 import {CheckContext} from "../../compiler/analyzer/type-checker";
 import {StringBuilder, StringBuilder_appendQuoted, StringBuilder_new} from "../../utils/stringbuilder";
 import {
-    Node, isCompactNodeKind, isUnaryPostfix, NodeKind, invertedBinaryKind, NODE_FLAG_DECLARE
+    Node, isCompactNodeKind, isUnaryPostfix, NodeKind, invertedBinaryKind, NODE_FLAG.DECLARE
 } from "../../compiler/core/node";
 import {Precedence} from "../../compiler/parser/parser";
 import {jsKindCastsOperandsToInt, EmitBinary} from "./js";

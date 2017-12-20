@@ -141,25 +141,27 @@ export function isCompactNodeKind(kind: NodeKind): boolean {
     return kind == NodeKind.CONSTANTS || kind == NodeKind.EXPRESSION || kind == NodeKind.VARIABLES;
 }
 
-export const NODE_FLAG_DECLARE = 1 << 0;
-export const NODE_FLAG_EXPORT = 1 << 1;
-export const NODE_FLAG_IMPORT = 1 << 2;
-export const NODE_FLAG_LIBRARY = 1 << 3;
-export const NODE_FLAG_GET = 1 << 4;
-export const NODE_FLAG_OPERATOR = 1 << 5;
-export const NODE_FLAG_POSITIVE = 1 << 6;
-export const NODE_FLAG_PRIVATE = 1 << 7;
-export const NODE_FLAG_PROTECTED = 1 << 8;
-export const NODE_FLAG_PUBLIC = 1 << 9;
-export const NODE_FLAG_SET = 1 << 10;
-export const NODE_FLAG_STATIC = 1 << 11;
-export const NODE_FLAG_UNSAFE = 1 << 12;
-export const NODE_FLAG_JAVASCRIPT = 1 << 13;
-export const NODE_FLAG_UNSIGNED_OPERATOR = 1 << 14;
-export const NODE_FLAG_VIRTUAL = 1 << 15;
-export const NODE_FLAG_START = 1 << 16;
-export const NODE_FLAG_ANYFUNC = 1 << 17;
-export const NODE_FLAG_GENERIC = 1 << 18;
+export var NODE_FLAG={
+    DECLARE : 1 << 0,
+    EXPORT : 1 << 1,
+    IMPORT : 1 << 2,
+    LIBRARY : 1 << 3,
+    GET : 1 << 4,
+    OPERATOR : 1 << 5,
+    POSITIVE : 1 << 6,
+    PRIVATE : 1 << 7,
+    PROTECTED : 1 << 8,
+    PUBLIC : 1 << 9,
+    SET : 1 << 10,
+    STATIC : 1 << 11,
+    UNSAFE : 1 << 12,
+    JAVASCRIPT : 1 << 13,
+    UNSIGNED_OPERATOR : 1 << 14,
+    VIRTUAL : 1 << 15,
+    START : 1 << 16,
+    ANYFUNC : 1 << 17,
+    GENERIC : 1 << 18,
+}
 
 export class NodeFlag {
     flag: int32;
@@ -427,23 +429,23 @@ export class Node {
     }
 
     isDeclare(): boolean {
-        return (this.flags & NODE_FLAG_DECLARE) != 0;
+        return (this.flags & NODE_FLAG.DECLARE) != 0;
     }
 
     isLibrary(): boolean {
-        return (this.flags & NODE_FLAG_LIBRARY) != 0;
+        return (this.flags & NODE_FLAG.LIBRARY) != 0;
     }
 
     isVirtual(): boolean {
-        return (this.flags & NODE_FLAG_VIRTUAL) != 0;
+        return (this.flags & NODE_FLAG.VIRTUAL) != 0;
     }
 
     isExport(): boolean {
-        return (this.flags & NODE_FLAG_EXPORT) != 0;
+        return (this.flags & NODE_FLAG.EXPORT) != 0;
     }
 
     isImport(): boolean {
-        return (this.flags & NODE_FLAG_IMPORT) != 0;
+        return (this.flags & NODE_FLAG.IMPORT) != 0;
     }
 
     isExternalImport(): boolean {
@@ -451,55 +453,55 @@ export class Node {
     }
 
     isStart(): boolean {
-        return (this.flags & NODE_FLAG_START) != 0;
+        return (this.flags & NODE_FLAG.START) != 0;
     }
 
     isJavaScript(): boolean {
-        return (this.flags & NODE_FLAG_JAVASCRIPT) != 0;
+        return (this.flags & NODE_FLAG.JAVASCRIPT) != 0;
     }
 
     isStatic(): boolean {
-        return (this.flags & NODE_FLAG_STATIC) != 0;
+        return (this.flags & NODE_FLAG.STATIC) != 0;
     }
 
     isAnyfunc(): boolean {
-        return (this.flags & NODE_FLAG_ANYFUNC) != 0;
+        return (this.flags & NODE_FLAG.ANYFUNC) != 0;
     }
 
     isDeclareOrJavaScript(): boolean {
-        return (this.flags & (NODE_FLAG_DECLARE | NODE_FLAG_JAVASCRIPT)) != 0;
+        return (this.flags & (NODE_FLAG.DECLARE | NODE_FLAG.JAVASCRIPT)) != 0;
     }
 
     isDeclareOrExport(): boolean {
-        return (this.flags & (NODE_FLAG_DECLARE | NODE_FLAG_EXPORT)) != 0;
+        return (this.flags & (NODE_FLAG.DECLARE | NODE_FLAG.EXPORT)) != 0;
     }
 
     isGet(): boolean {
-        return (this.flags & NODE_FLAG_GET) != 0;
+        return (this.flags & NODE_FLAG.GET) != 0;
     }
 
     isSet(): boolean {
-        return (this.flags & NODE_FLAG_SET) != 0;
+        return (this.flags & NODE_FLAG.SET) != 0;
     }
 
     isOperator(): boolean {
-        return (this.flags & NODE_FLAG_OPERATOR) != 0;
+        return (this.flags & NODE_FLAG.OPERATOR) != 0;
     }
 
     isPositive(): boolean {
-        return (this.flags & NODE_FLAG_POSITIVE) != 0;
+        return (this.flags & NODE_FLAG.POSITIVE) != 0;
     }
 
     isPrivate(): boolean {
-        return (this.flags & NODE_FLAG_PRIVATE) != 0;
+        return (this.flags & NODE_FLAG.PRIVATE) != 0;
     }
 
     isUnsafe(): boolean {
-        return (this.flags & NODE_FLAG_UNSAFE) != 0;
+        return (this.flags & NODE_FLAG.UNSAFE) != 0;
     }
 
     isGeneric(): boolean {
-        return (this.flags & NODE_FLAG_GENERIC) != 0;
+        return (this.flags & NODE_FLAG.GENERIC) != 0;
     }
 
     isTemplate(): boolean {
@@ -507,7 +509,7 @@ export class Node {
     }
 
     isUnsignedOperator(): boolean {
-        return (this.flags & NODE_FLAG_UNSIGNED_OPERATOR) != 0;
+        return (this.flags & NODE_FLAG.UNSIGNED_OPERATOR) != 0;
     }
 
     childCount(): int32 {

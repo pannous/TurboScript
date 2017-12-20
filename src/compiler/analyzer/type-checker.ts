@@ -37,16 +37,7 @@ import {
     isExpression,
     isUnary,
     Node,
-    NODE_FLAG_DECLARE,
-    NODE_FLAG_EXPORT,
-    NODE_FLAG_GENERIC,
-    NODE_FLAG_GET,
-    NODE_FLAG_LIBRARY,
-    NODE_FLAG_PRIVATE,
-    NODE_FLAG_PROTECTED,
-    NODE_FLAG_PUBLIC,
-    NODE_FLAG_SET,
-    NODE_FLAG_UNSIGNED_OPERATOR,
+    NODE_FLAG,
     NodeKind,
     rangeForFlag
 } from "../core/node";
@@ -186,7 +177,7 @@ export function initialize(context: CheckContext, node: Node, parentScope: Scope
             genericSymbol.resolvedType = new Type();
             genericSymbol.resolvedType.symbol = genericSymbol;
             genericSymbol.flags = SYMBOL_FLAG_IS_GENERIC;
-            genericType.flags = NODE_FLAG_GENERIC;
+            genericType.flags = NODE_FLAG.GENERIC;
             addScopeToSymbol(genericSymbol, parentScope);
             linkSymbolToNode(genericSymbol, genericType);
             parentScope.define(context.log, genericSymbol, ScopeHint.NORMAL);
@@ -330,7 +321,7 @@ export function initialize(context: CheckContext, node: Node, parentScope: Scope
     let child = node.firstChild;
     while (child != null) {
         if (mode == CheckMode.INITIALIZE) {
-            child.flags |= NODE_FLAG_LIBRARY;
+            child.flags |= NODE_FLAG.LIBRARY;
         }
         initialize(context, child, parentScope, mode);
         child = child.nextSibling;
@@ -405,41 +396,41 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
 
     // Most flags aren't supported yet
     let node = symbol.node;
-    // forbidFlag(context, node, NODE_FLAG_EXPORT, "Unsupported flag 'export'");
-    forbidFlag(context, node, NODE_FLAG_PROTECTED, "Unsupported flag 'protected'");
-    //forbidFlag(context, node, NODE_FLAG_STATIC, "Unsupported flag 'static'");
+    // forbidFlag(context, node, NODE_FLAG.EXPORT, "Unsupported flag 'export'");
+    forbidFlag(context, node, NODE_FLAG.PROTECTED, "Unsupported flag 'protected'");
+    //forbidFlag(context, node, NODE_FLAG.STATIC, "Unsupported flag 'static'");
 
     // Module
     if (symbol.kind == SymbolKind.TYPE_MODULE) {
-        forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' on a namespace");
-        forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' on a namespace");
-        forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' on a namespace");
-        forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' on a namespace");
+        forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' on a namespace");
+        forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' on a namespace");
+        forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' on a namespace");
+        forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' on a namespace");
     }
 
     // Class
     else if (symbol.kind == SymbolKind.TYPE_CLASS || symbol.kind == SymbolKind.TYPE_NATIVE ||
         symbol.kind == SymbolKind.TYPE_GENERIC || symbol.kind == SymbolKind.TYPE_TEMPLATE) {
-        forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' on a class");
-        forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' on a class");
-        forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' on a class");
-        forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' on a class");
+        forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' on a class");
+        forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' on a class");
+        forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' on a class");
+        forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' on a class");
     }
 
     // Interface
     else if (symbol.kind == SymbolKind.TYPE_INTERFACE) {
-        forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' on a interface");
-        forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' on a interface");
-        forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' on a interface");
-        forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' on a interface");
+        forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' on a interface");
+        forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' on a interface");
+        forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' on a interface");
+        forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' on a interface");
     }
 
     // Enum
     else if (symbol.kind == SymbolKind.TYPE_ENUM) {
-        forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' on an enum");
-        forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' on an enum");
-        forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' on an enum");
-        forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' on an enum");
+        forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' on an enum");
+        forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' on an enum");
+        forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' on an enum");
+        forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' on an enum");
 
         symbol.resolvedType = new Type();
         symbol.resolvedType.symbol = symbol;
@@ -472,14 +463,14 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
         }
 
         if (symbol.kind != SymbolKind.FUNCTION_INSTANCE) {
-            forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' here");
-            forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' here");
-            forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' here");
-            forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' here");
+            forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' here");
+            forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' here");
+            forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' here");
+            forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' here");
         }
 
         else if (node.isGet()) {
-            forbidFlag(context, node, NODE_FLAG_SET, "Cannot use both 'get' and 'set'");
+            forbidFlag(context, node, NODE_FLAG.SET, "Cannot use both 'get' and 'set'");
 
             // Validate argument count including "this"
             if (argumentCount != 1) {
@@ -528,13 +519,13 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
             let parent = symbol.parent();
             let shouldConvertInstanceToGlobal = false;
 
-            forbidFlag(context, node, NODE_FLAG_EXPORT, "Cannot use 'export' on an instance function");
-            forbidFlag(context, node, NODE_FLAG_DECLARE, "Cannot use 'declare' on an instance function");
+            forbidFlag(context, node, NODE_FLAG.EXPORT, "Cannot use 'export' on an instance function");
+            forbidFlag(context, node, NODE_FLAG.DECLARE, "Cannot use 'declare' on an instance function");
 
             // Functions inside declared classes are automatically declared
             if (parent.node.isDeclare()) {
                 if (body == null) {
-                    node.flags = node.flags | NODE_FLAG_DECLARE;
+                    node.flags = node.flags | NODE_FLAG.DECLARE;
                 } else {
                     shouldConvertInstanceToGlobal = true;
                 }
@@ -548,7 +539,7 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
 
                 // Functions inside export classes are automatically export
                 if (parent.node.isExport()) {
-                    node.flags = node.flags | NODE_FLAG_EXPORT;
+                    node.flags = node.flags | NODE_FLAG.EXPORT;
                 }
             }
 
@@ -565,14 +556,14 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
 
         // Imported functions require a modifier for consistency with TypeScript
         else if (body == null) {
-            forbidFlag(context, node, NODE_FLAG_EXPORT, "Cannot use 'export' on an unimplemented function");
+            forbidFlag(context, node, NODE_FLAG.EXPORT, "Cannot use 'export' on an unimplemented function");
             if (!node.parent || !node.parent.isDeclare()) {
-                requireFlag(context, node, NODE_FLAG_DECLARE, "Declared functions must be prefixed with 'declare'");
+                requireFlag(context, node, NODE_FLAG.DECLARE, "Declared functions must be prefixed with 'declare'");
             }
         }
 
         else {
-            forbidFlag(context, node, NODE_FLAG_DECLARE, "Cannot use 'declare' on a function with an implementation");
+            forbidFlag(context, node, NODE_FLAG.DECLARE, "Cannot use 'declare' on a function with an implementation");
         }
 
         context.isUnsafeAllowed = oldUnsafeAllowed;
@@ -580,8 +571,8 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
 
     // Variable
     else if (isVariable(symbol.kind)) {
-        forbidFlag(context, node, NODE_FLAG_GET, "Cannot use 'get' on a variable");
-        forbidFlag(context, node, NODE_FLAG_SET, "Cannot use 'set' on a variable");
+        forbidFlag(context, node, NODE_FLAG.GET, "Cannot use 'get' on a variable");
+        forbidFlag(context, node, NODE_FLAG.SET, "Cannot use 'set' on a variable");
 
         let type = node.variableType();
         let value = node.variableValue();
@@ -589,8 +580,8 @@ export function initializeSymbol(context: CheckContext, symbol: Symbol): void {
         context.isUnsafeAllowed = context.isUnsafeAllowed || node.isUnsafe();
 
         if (symbol.kind != SymbolKind.VARIABLE_INSTANCE) {
-            forbidFlag(context, node, NODE_FLAG_PUBLIC, "Cannot use 'public' here");
-            forbidFlag(context, node, NODE_FLAG_PRIVATE, "Cannot use 'private' here");
+            forbidFlag(context, node, NODE_FLAG.PUBLIC, "Cannot use 'public' here");
+            forbidFlag(context, node, NODE_FLAG.PRIVATE, "Cannot use 'private' here");
         }
 
         if (type != null) {
@@ -1461,7 +1452,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
             node.resolvedType = symbol.resolvedType;
 
             if (node.resolvedType.isGeneric()) {
-                node.flags |= NODE_FLAG_GENERIC;
+                node.flags |= NODE_FLAG.GENERIC;
             }
 
             // Inline constants
@@ -1958,7 +1949,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
         // Special-case long types
         else if (value.resolvedType.isLong()) {
             if (value.resolvedType.isUnsigned()) {
-                node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
+                node.flags = node.flags | NODE_FLAG.UNSIGNED_OPERATOR;
                 node.resolvedType = context.uint64Type;
             } else {
                 node.resolvedType = context.int64Type;
@@ -1977,7 +1968,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
         // Special-case integer types
         else if (value.resolvedType.isInteger()) {
             if (value.resolvedType.isUnsigned()) {
-                node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
+                node.flags = node.flags | NODE_FLAG.UNSIGNED_OPERATOR;
                 node.resolvedType = context.uint32Type;
             } else {
                 node.resolvedType = context.int32Type;
@@ -2125,7 +2116,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
                 }
 
                 if (isUnsigned) {
-                    node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
+                    node.flags = node.flags | NODE_FLAG.UNSIGNED_OPERATOR;
                 }
 
                 checkConversion(context, left, commonType, ConversionKind.IMPLICIT);
@@ -2208,7 +2199,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
                 let expectedType = isFloat ? (isFloat64 ? context.float64Type : context.float32Type) : (isUnsigned ? context.uint32Type : context.int32Type);
 
                 if (isUnsigned) {
-                    node.flags = node.flags | NODE_FLAG_UNSIGNED_OPERATOR;
+                    node.flags = node.flags | NODE_FLAG.UNSIGNED_OPERATOR;
                 }
 
                 if (leftType != rightType) {

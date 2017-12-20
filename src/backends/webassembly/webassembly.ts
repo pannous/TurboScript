@@ -3,7 +3,7 @@ import {isFunction, Symbol, SymbolKind} from "../../compiler/core/symbol";
 import {ByteArray, ByteArray_set32, ByteArray_setString} from "../../utils/bytearray";
 import {CheckContext} from "../../compiler/analyzer/type-checker";
 import {alignToNextMultipleOf, toHex} from "../../utils/utils";
-import {isExpression, isUnary, isUnaryPostfix, Node, NODE_FLAG_IMPORT, NodeKind} from "../../compiler/core/node";
+import {isExpression, isUnary, isUnaryPostfix, Node, NODE_FLAG, NodeKind} from "../../compiler/core/node";
 import {Type} from "../../compiler/core/type";
 import {Compiler} from "../../compiler/compiler";
 import {WasmOpcode} from "./opcode";
@@ -648,7 +648,7 @@ class WasmModuleEmitter {
                     symbol.offset = this.assembler.module.importCount;
                     if (isBinaryImport(wasmFunctionName)) {
                         // this.assembler.module.allocateImport(signature, signatureIndex, "internal", symbol.name);
-                        symbol.node.flags |= NODE_FLAG_IMPORT;
+                        symbol.node.flags |= NODE_FLAG.IMPORT;
                     } else {
                         this.assembler.module.allocateImport(signature, signatureIndex, moduleName, symbol.name);
                     }

@@ -48,21 +48,7 @@ import {
     createWhile,
     isUnary,
     Node,
-    NODE_FLAG_ANYFUNC,
-    NODE_FLAG_DECLARE,
-    NODE_FLAG_EXPORT,
-    NODE_FLAG_GET,
-    NODE_FLAG_JAVASCRIPT,
-    NODE_FLAG_OPERATOR,
-    NODE_FLAG_POSITIVE,
-    NODE_FLAG_PRIVATE,
-    NODE_FLAG_PROTECTED,
-    NODE_FLAG_PUBLIC,
-    NODE_FLAG_SET,
-    NODE_FLAG_START,
-    NODE_FLAG_STATIC,
-    NODE_FLAG_UNSAFE,
-    NODE_FLAG_VIRTUAL,
+    NODE_FLAG,
     NodeFlag,
     NodeKind
 } from "../core/node";
@@ -950,7 +936,7 @@ class ParserContext {
 
                 // The "get" and "set" flags are contextual
                 if (isGet || isSet) {
-                    childFlags = appendFlag(childFlags, isGet ? NODE_FLAG_GET : NODE_FLAG_SET, childName.range);
+                    childFlags = appendFlag(childFlags, isGet ? NODE_FLAG.GET : NODE_FLAG.SET, childName.range);
 
                     // Get the real identifier
                     childName = this.current;
@@ -1109,7 +1095,7 @@ class ParserContext {
 
                 // The "get" and "set" flags are contextual
                 if (isGet || isSet) {
-                    childFlags = appendFlag(childFlags, isGet ? NODE_FLAG_GET : NODE_FLAG_SET, childName.range);
+                    childFlags = appendFlag(childFlags, isGet ? NODE_FLAG.GET : NODE_FLAG.SET, childName.range);
 
                     // Get the real identifier
                     childName = this.current;
@@ -1172,7 +1158,7 @@ class ParserContext {
         let INT=createName("int").withRange(token.range);// wtf api
         let AUTO=createName("auto").withRange(token.range);// wtf api
         let DEFAULT_RETURN_TYPE = VOID;
-        
+
         // let DEFAULT_RETURN_TYPE = INT;
     // > CompileError: WasmCompile: Compiling wasm function #4:todo failed: expected 1 elements on the stack for fallthru to @1 @+134
 
@@ -1267,14 +1253,14 @@ class ParserContext {
 /////////////////////////////////////////
         if (name == "main") {
             let flag = new NodeFlag();
-            flag.flag=NODE_FLAG_EXPORT
+            flag.flag=NODE_FLAG.EXPORT
             flag.next=  firstFlag
             firstFlag=flag
         }
         node.firstFlag = firstFlag;
         node.flags = allFlags(firstFlag);
         if (isOperator) {
-            node.flags = node.flags | NODE_FLAG_OPERATOR;
+            node.flags = node.flags | NODE_FLAG.OPERATOR;
         }
 
         // Type parameters
@@ -1573,17 +1559,17 @@ class ParserContext {
             let token = this.current;
             let flag: int32;
 
-            if (this.eat(TokenKind.DECLARE)) flag = NODE_FLAG_DECLARE;
-            else if (this.eat(TokenKind.EXPORT)) flag = NODE_FLAG_EXPORT;
-            else if (this.eat(TokenKind.PRIVATE)) flag = NODE_FLAG_PRIVATE;
-            else if (this.eat(TokenKind.PROTECTED)) flag = NODE_FLAG_PROTECTED;
-            else if (this.eat(TokenKind.PUBLIC)) flag = NODE_FLAG_PUBLIC;
-            else if (this.eat(TokenKind.STATIC)) flag = NODE_FLAG_STATIC;
-            else if (this.eat(TokenKind.ANYFUNC)) flag = NODE_FLAG_ANYFUNC;
-            else if (this.eat(TokenKind.UNSAFE)) flag = NODE_FLAG_UNSAFE;
-            else if (this.eat(TokenKind.JAVASCRIPT)) flag = NODE_FLAG_JAVASCRIPT;
-            else if (this.eat(TokenKind.START)) flag = NODE_FLAG_START;
-            else if (this.eat(TokenKind.VIRTUAL)) flag = NODE_FLAG_VIRTUAL;
+            if (this.eat(TokenKind.DECLARE)) flag = NODE_FLAG.DECLARE;
+            else if (this.eat(TokenKind.EXPORT)) flag = NODE_FLAG.EXPORT;
+            else if (this.eat(TokenKind.PRIVATE)) flag = NODE_FLAG.PRIVATE;
+            else if (this.eat(TokenKind.PROTECTED)) flag = NODE_FLAG.PROTECTED;
+            else if (this.eat(TokenKind.PUBLIC)) flag = NODE_FLAG.PUBLIC;
+            else if (this.eat(TokenKind.STATIC)) flag = NODE_FLAG.STATIC;
+            else if (this.eat(TokenKind.ANYFUNC)) flag = NODE_FLAG.ANYFUNC;
+            else if (this.eat(TokenKind.UNSAFE)) flag = NODE_FLAG.UNSAFE;
+            else if (this.eat(TokenKind.JAVASCRIPT)) flag = NODE_FLAG.JAVASCRIPT;
+            else if (this.eat(TokenKind.START)) flag = NODE_FLAG.START;
+            else if (this.eat(TokenKind.VIRTUAL)) flag = NODE_FLAG.VIRTUAL;
             else return firstFlag;
 
             let link = new NodeFlag();
@@ -1605,7 +1591,7 @@ class ParserContext {
             return null;
         }
 
-        node.flags = node.flags | NODE_FLAG_UNSAFE;
+        node.flags = node.flags | NODE_FLAG.UNSAFE;
         return node.withRange(spanRanges(token.range, node.range));
     }
 
@@ -1618,7 +1604,7 @@ class ParserContext {
             return null;
         }
 
-        node.flags = node.flags | NODE_FLAG_JAVASCRIPT;
+        node.flags = node.flags | NODE_FLAG.JAVASCRIPT;
         return node.withRange(spanRanges(token.range, node.range));
     }
 
@@ -1631,7 +1617,7 @@ class ParserContext {
             return null;
         }
 
-        node.flags = node.flags | NODE_FLAG_START;
+        node.flags = node.flags | NODE_FLAG.START;
         return node.withRange(spanRanges(token.range, node.range));
     }
 
@@ -1644,7 +1630,7 @@ class ParserContext {
             return null;
         }
 
-        node.flags = node.flags | NODE_FLAG_VIRTUAL;
+        node.flags = node.flags | NODE_FLAG.VIRTUAL;
         return node.withRange(spanRanges(token.range, node.range));
     }
 
@@ -1710,7 +1696,7 @@ class ParserContext {
         let source = range.source;
         let contents = source.contents;
         node.intValue = parseInt(contents.substring(range.start, range.end));
-        node.flags = NODE_FLAG_POSITIVE;
+        node.flags = NODE_FLAG.POSITIVE;
         return true;
     }
 
@@ -1718,7 +1704,7 @@ class ParserContext {
         let source = range.source;
         let contents = source.contents;
         node.floatValue = parseFloat(contents.substring(range.start, range.end));
-        node.flags = NODE_FLAG_POSITIVE;
+        node.flags = NODE_FLAG.POSITIVE;
         return true;
     }
 
@@ -1726,7 +1712,7 @@ class ParserContext {
         let source = range.source;
         let contents = source.contents;
         node.doubleValue = parseFloat(contents.substring(range.start, range.end));
-        node.flags = NODE_FLAG_POSITIVE;
+        node.flags = NODE_FLAG.POSITIVE;
         return true;
     }
 }
