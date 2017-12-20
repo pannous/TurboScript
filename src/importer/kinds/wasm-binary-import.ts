@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
-import {WasmSignature} from "../..//webassembly/core/wasm-signature";
-import {wasmToTurboType} from "../..//webassembly/utils/index";
-=======
 import {WasmSignature} from "../../webassembly/core/wasm-signature";
 import {wasmToTurboType} from "../../webassembly/utils/index";
->>>>>>> Stashed changes
 /**
  * Created by n.vinayakan on 23.06.17.
  */

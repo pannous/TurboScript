@@ -1,16 +1,4 @@
 import {FileSystem} from "../utils/filesystem";
-<<<<<<< Updated upstream
-import {WasmBinary} from "..//webassembly/wasm/wasm-binary";
-import {WasmSection} from "..//webassembly/core/wasm-section";
-import {ExportSection} from "..//webassembly/wasm/sections/export-section";
-import {WasmExport} from "..//webassembly/core/wasm-export";
-import {SignatureSection} from "..//webassembly/wasm/sections/signature-section";
-import {FunctionSection} from "..//webassembly/wasm/sections/function-section";
-import {WasmExternalKind} from "..//webassembly/core/wasm-external-kind";
-import {Terminal} from "../utils/terminal";
-import {WasmBinaryImport} from "./kinds/wasm-binary-import";
-import {ImportSection} from "..//webassembly/wasm/sections/import-section";
-=======
 import {WasmBinary} from "../webassembly/wasm/wasm-binary";
 import {WasmSection} from "../webassembly/core/wasm-section";
 import {ExportSection} from "../webassembly/wasm/sections/export-section";
@@ -21,7 +9,6 @@ import {WasmExternalKind} from "../webassembly/core/wasm-external-kind";
 import {Terminal} from "../utils/terminal";
 import {WasmBinaryImport} from "./kinds/wasm-binary-import";
 import {ImportSection} from "../webassembly/wasm/sections/import-section";
->>>>>>> Stashed changes
 /**
  * Created by n.vinayakan on 23.06.17.
  */

@@ -8,21 +8,13 @@ import {Scope} from "./core/scope";
 import {tokenize} from "./scanner/scanner";
 import {parse} from "./parser/parser";
 import {treeShaking} from "./optimizer/shaking";
-<<<<<<< Updated upstream
-import {wasmEmit} from "..//webassembly/webassembly";
-=======
 import {wasmEmit} from "../webassembly/webassembly";
->>>>>>> Stashed changes
 import {Library} from "../library/library";
 import {preparse} from "./parser/preparser";
 import {CompileTarget} from "./compile-target";
 import {assert} from "../utils/assert";
 import {Terminal} from "../utils/terminal";
-<<<<<<< Updated upstream
-import {WasmBinary} from "..//webassembly/wasm/wasm-binary";
-=======
 import {WasmBinary} from "../webassembly/wasm/wasm-binary";
->>>>>>> Stashed changes
 import {BinaryImporter} from "../importer/binary-importer";
 /**
  * Author: Nidin Vinayakan
