@@ -4,6 +4,7 @@ import {SourceRange} from "../../utils/log";
 import {Scope} from "./scope";
 import {addScopeToSymbol, CheckContext, linkSymbolToNode} from "../analyzer/type-checker";
 import {assert} from "../../utils/assert";
+// import {Function} from "binaryen";
 
 /**
  * Author: Nidin Vinayakan
@@ -317,7 +318,7 @@ export class Node {
         this._rawValue = newValue;
     }
 
-    becomeTypeOf(node: Node, context: CheckContext): void {
+    becomeTypeOf(node: Node, context: CheckContext) {
 
         switch (node.resolvedType) {
             case context.int64Type:
@@ -550,7 +551,7 @@ export class Node {
     }
 
     createEmptyConstructor(): Node {
-        let node = createFunction("constructor");
+        let node = new Function("constructor");
         node.appendChild(createName(this.symbol.name));
         let body = createBlock();
         node.appendChild(body);
@@ -1098,6 +1099,13 @@ export class Node {
     }
 }
 
+
+class Function extends Node{
+	constructor(name: String){
+		super({kind : NodeKind.FUNCTION,stringValue :name});
+	}
+}
+
 export function createNew(type: Node): Node {
     assert(isExpression(type));
     let node = new Node();
@@ -1421,7 +1429,8 @@ export function createVariable(name: string, type: Node, value: Node): Node {
 }
 
 export function createFunction(name: string): Node {
-    let node = new Node({kind : NodeKind.FUNCTION,stringValue :name});
+	let node = new Function(name);
+	// let node = new Node({kind : NodeKind.FUNCTION,stringValue :name});
     // node.kind = NodeKind.FUNCTION;
     // node.stringValue = name;
     return node;
