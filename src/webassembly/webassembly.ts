@@ -11,7 +11,7 @@ import {getBuiltinOpcode, isBuiltin} from "./builtins-helper";
 import {assert} from "../utils/assert";
 import {WasmType, WasmTypeToString} from "./core/wasm-type";
 import {log, logData} from "./utils/logger";
-import {Bitness} from "../bitness";
+import {Bitness} from "./bitness";
 import {WasmSection} from "./core/wasm-section";
 import {WasmExternalKind} from "./core/wasm-external-kind";
 import {WasmGlobal} from "./core/wasm-global";
