@@ -1,5 +1,5 @@
 {
-//  "compileOnSave ": true,
+//  "compileOnSave ": true, not webpack :(
   "compilerOptions": {
     "target": "es2017",
     //    "target": "es6",
