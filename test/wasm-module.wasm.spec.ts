@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import {compileWasmSync} from "./utils/utils";
-import {WasmModule} from "../src/backends/webassembly/wasm/wasm-module";
+import {WasmModule} from "../src/webassembly/wasm/wasm-module";
 
 test('wasm-module', () => {
     compileWasmSync(path.join(__dirname, 'wasm-module.tbs'));
