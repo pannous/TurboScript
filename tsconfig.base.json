@@ -1,9 +1,9 @@
 {
+//  "compileOnSave ": true,
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es2015"
-    ],
+    "target": "es2017",
+    //    "target": "es6",
+    //    "lib": ["es2017"], // if target
     "typeRoots": [
       "./node_modules/@types"
     ],

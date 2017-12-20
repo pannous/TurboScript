@@ -227,6 +227,10 @@ export class Node {
     constructorFunctionNode: Node;
     derivedNodes: Node[];
 
+    constructor(options={}){
+        Object.assign(this,options)
+    }
+
     private _rawValue: any;
     private _hasValue: boolean;
     private _hasStringValue: boolean;
@@ -1417,9 +1421,9 @@ export function createVariable(name: string, type: Node, value: Node): Node {
 }
 
 export function createFunction(name: string): Node {
-    let node = new Node();
-    node.kind = NodeKind.FUNCTION;
-    node.stringValue = name;
+    let node = new Node({kind : NodeKind.FUNCTION,stringValue :name});
+    // node.kind = NodeKind.FUNCTION;
+    // node.stringValue = name;
     return node;
 }
 

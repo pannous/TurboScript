@@ -23,4 +23,4 @@ interface Math {
     log2(a: number): number;
     clz32(x: number): number;
 }
-declare const window;
+// declare const window;
