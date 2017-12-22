@@ -32,9 +32,15 @@ src/**/*.js
 lib/tc.js.map
 
 .turbotest.js
+.turbo/
 
 out.*
 test/snapshots/
 tests/bin/
 test/*.js
 test/**/*.js
+
+sample/test.ts
+sample/bin/
+sample/x.js
+sample/x.ts
