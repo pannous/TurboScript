@@ -28,8 +28,13 @@ src/**/*.js
 !src/library/webassembly/wrapper.js
 !src/library/turbo/runtime.js
 !src/library/turbo/wrapper.tjs
+
 lib/tc.js.map
+
+.turbotest.js
+
+out.*
 test/snapshots/
 tests/bin/
-.turbotest.js
-out.wasm out.wast test.js
+test/*.js
+test/**/*.js
