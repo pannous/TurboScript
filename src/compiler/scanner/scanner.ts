@@ -309,6 +309,7 @@ export function tokenize(source: Source, log: Log): Token {
                     if (text == "as") kind = Tokens.AS;
                     else if (text == "if") kind = Tokens.IF;
                     else if (text == "or") kind = Tokens.IF;
+                    else if (text == "do") kind = Tokens.LEFT_BRACE;
                     else if (text == "is") kind = Tokens.EQUAL; // todo
                     else if (text == "to") kind = Tokens.FUNCTION;
 
@@ -327,10 +328,13 @@ export function tokenize(source: Source, log: Log): Token {
                     else if (text == "nil") kind = Tokens.NULL;
                     else if (text == "nul") kind = Tokens.NULL;
                     else if (text == "@JS") kind = Tokens.JAVASCRIPT;
+
+                    else if (text == "end") kind = Tokens.RIGHT_BRACE;
                 }
 
                 else if (length == 4) {
                     if (text == "else") kind = Tokens.ELSE;
+                    else if (text == "then") kind = Tokens.LEFT_BRACE;
                     else if (text == "enum") kind = Tokens.ENUM;
                     else if (text == "null") kind = Tokens.NULL;
                     else if (text == "Null") kind = Tokens.NULL;

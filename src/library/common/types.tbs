@@ -1,4 +1,5 @@
 // Native types
+// TODO vs common/types vs turbo/types ?
 const NaN:      float64 = 0.0 / 0.0;
 const Infinity: float64 = 1.0 / 0.0;
 
@@ -73,7 +74,7 @@ declare class string {
 
     operator == (other: string):boolean;
     operator [] (index: int32): uint16 { return this.charCodeAt(index); }
-    slice(start: int32, end: int32): string;
+    slice(start: int32, ends: int32): string;
 
     // startsWith(text: string): boolean { return this.slice(0, text.length) == text; }
     // endsWith(text: string): boolean { return this.slice(-text.length, this.length) == text; }

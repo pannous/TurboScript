@@ -1,3 +1,4 @@
+// TODO vs common/types vs turbo/types ?
 declare class boolean {
     toString(): string;
 }
@@ -50,7 +51,7 @@ declare class string {
     lastIndexOf(text: string): int32;
     operator == (other: string): boolean;
     operator [] (index: int32): uint16 { return this.charCodeAt(index); }
-    slice(start: int32, end: int32): string;
+    slice(start: int32, ends: int32): string;
 
     startsWith(text: string): boolean { return this.slice(0, text.length) == text; }
     endsWith(text: string): boolean { return this.slice(-text.length, this.length) == text; }

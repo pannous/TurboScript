@@ -125,9 +125,14 @@ class ParserContext {
     }
 
     expect(kind: Tokens): boolean {
+        var a=Tokens.LEFT_BRACE;
         if (!this.peek(kind)) {
             if(kind==Tokens.SEMICOLON)return true;// optional semicolon
-            if(kind==Tokens.COLON)return true; // optional COLON
+	        if(kind==Tokens.COLON)return true; // optional COLON
+	        // if(kind==Tokens.LEFT_BRACE)return true; // optional braces
+	        if(kind==Tokens.RIGHT_BRACE)return true; // optional braces
+	        if(kind==Tokens.LEFT_PARENTHESIS)return true; // optional braces
+	        if(kind==Tokens.RIGHT_PARENTHESIS)return true; // optional braces
             if (this.lastError != this.current) {
                 this.lastError = this.current;
 
@@ -1653,7 +1658,8 @@ class ParserContext {
             return null;
         }
 
-        if (this.peek(Tokens.LEFT_BRACE)) return this.parseBlock();
+	    // if (this.peek(Tokens.DO)) return this.parseBlock();
+	    if (this.peek(Tokens.LEFT_BRACE)) return this.parseBlock();
         if (this.peek(Tokens.BREAK)) return this.parseLoopJump(NodeKind.BREAK);
         if (this.peek(Tokens.CONTINUE)) return this.parseLoopJump(NodeKind.CONTINUE);
         if (this.peek(Tokens.IF)) return this.parseIf();

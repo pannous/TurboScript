@@ -1146,6 +1146,7 @@ export function isSymbolAccessAllowed(context: CheckContext, symbol: Symbol, nod
         }
 
         else {
+	        // return true;// auto CALL symbol
             context.log.error(range, `Must call function '${symbol.name}'`);
         }
 
