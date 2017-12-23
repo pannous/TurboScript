@@ -45,7 +45,7 @@ sample/bin/
 sample/x.js
 sample/x.ts
 
-**/**.bak
+**/*.bak
 
 build.sh
 package-lock.json
