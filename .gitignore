@@ -44,3 +44,9 @@ sample/test.ts
 sample/bin/
 sample/x.js
 sample/x.ts
+
+**/**.bak
+
+build.sh
+package-lock.json
+webpack.sh
