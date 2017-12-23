@@ -11,7 +11,8 @@ function fib(n: int): int {
 }
 // class Data extends int{}
 class Data{
-	private i: int;
+	// private
+	i: int;
 	constructor(i:int){
 		this.i=i;
 	}
@@ -26,7 +27,8 @@ function testArray(num: int32): Array<Data> {
 	// console.log(a as int32);
 	let i: int32 = 0;
 	while (i < num) {
-		let d:Data = new Data(i);// as Data
+		let d = new Data(i);// as Data
+		// let d:Data = new Data(i);// as Data
 		// log.printI32(d as int32);
 		// d.set(0.5, 0.5, 0.5);
 		a[i] = d
@@ -59,7 +61,7 @@ function main():int{
   // var z:any="HI"
   // if(y)console.log(y)
   // return
-  fib(21)+test()+count
+  fib(21)+test()+count+2
 }
 
 /*

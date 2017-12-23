@@ -225,7 +225,7 @@ export class Compiler {
 
         Terminal.timeEnd("emitting");
 
-        Terminal.write("Done!");
+        Terminal.write("Done!\n");
 
         return true;
     }

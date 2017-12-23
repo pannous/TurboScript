@@ -42,8 +42,8 @@ def testLogic(){
 	a[x]
 }
 
-<!-- hello
---!>
+//<!-- hello
+//--!>
 
 
 def main():int{
@@ -52,5 +52,5 @@ def main():int{
   // var z:any="HI"
   // if(y)console.log(y)
   // return 
-  fib(20)+test()
+  fib(20)+test()+2
 }

@@ -1,10 +1,14 @@
+#!/bin/bash
+in=${1:-"/opt/TurboScript/test.nai"}
+echo GOT $in
 cd test
-../bin/tc test.ts  # compiles to out.wasm
+/opt/TurboScript/bin/tc $in --run
+#../bin/tc # compiles to out.wasm
 file="out.wasm"
 node --expose-wasm --harmony --no-warnings -i -e " // ugly inline js helper :
 wasm = async (file) => {
 	imports = {
-			console: {log: (x) => console.log(x)} 
+			console: {log: (x) => console.log(x)}
 	};
 	_wasm = fs.readFileSync(file);
 	module = await WebAssembly.compile(_wasm);

@@ -1634,7 +1634,12 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
                 }
 
                 if (returnType.resolvedType.isArray()) {
-                    Terminal.write(returnType);
+	                try {
+		                Terminal.write(returnType);
+	                } catch (e) {
+	                    console.log("can't write "+returnType)
+	                    console.log(e)
+	                }
                 }
                 // Pass the return type along
                 node.resolvedType = returnType.resolvedType;
