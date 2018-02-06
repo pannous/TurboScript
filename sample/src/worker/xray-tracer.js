@@ -1,9 +1,14 @@
 "use strict";
+/**
+ * Created by Nidin Vinayakan on 26-10-2016.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 var Color = xray.Color;
 var Color3 = xray.Color3;
 var Camera = xray.Camera;
 var Sampler = xray.Sampler;
+// var Vector = xray.Vector;
+// var Scene = xray.Scene;
 var xRayTracer = (function () {
     function xRayTracer(data) {
         this.iterations = 1;
@@ -83,6 +88,8 @@ var xRayTracer = (function () {
         var camera = this.camera;
         var sampler = this.sampler;
         var buf = this.buffer;
+        // let w = buf.width;
+        // let h = buf.height;
         var spp = this.samplesPerPixel;
         var sppRoot = Math.round(Math.sqrt(this.samplesPerPixel));
         this.iterations++;
@@ -103,6 +110,7 @@ var xRayTracer = (function () {
                 }
                 var c = new Color3();
                 if (this.stratifiedSampling) {
+                    // stratified subsampling
                     for (var u = 0; u < sppRoot; u++) {
                         for (var v = 0; v < sppRoot; v++) {
                             var fu = (u + 0.5) / sppRoot;
@@ -115,20 +123,103 @@ var xRayTracer = (function () {
                     c = c.divScalar(sppRoot * sppRoot);
                 }
                 else {
+                    // random subsampling
                     for (var i = 0; i < spp; i++) {
                         var fu = Math.random();
                         var fv = Math.random();
                         var ray = Camera.CastRay(camera, x, y, this.full_width, this.full_height, fu, fv);
+                        // let sample = Sampler.Sample(sampler, scene, ray);
                         var sample = sampler.sample(scene, ray, true, sampler.firstHitSamples, 1);
                         c = c.add(sample);
+                        //Color.Add_mem(c, sample, c);
+                        //Buffer.AddSample(buf, x, y, sample);
                     }
                     c = c.divScalar(spp);
                 }
+                /*// adaptive sampling
+                if (this.AdaptiveSamples > 0) {
+                    let v = clamp(buf.StandardDeviation(x, y).MaxComponent(), 0, 1);
+                    // v = math.Pow(v, 2)
+                    let samples = int(v * float64(r.AdaptiveSamples))
+                    for (let i = 0; i < samples; i++) {
+                        let fu = Math.random();
+                        let fv = Math.random();
+                        let ray = Camera.CastRay(camera, x, y, this.full_width, this.full_height, fu, fv);
+                        let sample = Sampler.Sample(sampler, scene, ray);
+                        Color.Add_mem(this.c, sample, this.c);
+                        //Buffer.AddSample(buf, x, y, sample);
+                    }
+                }
+                // firefly reduction
+                if (this.FireflySamples > 0) {
+                    if (buf.StandardDeviation(x, y).MaxComponent() > this.FireflyThreshold) {
+                        for (let i = 0; i < this.FireflySamples; i++) {
+                            let fu = Math.random();
+                            let fv = Math.random();
+                            let ray = Camera.CastRay(camera, x, y, this.full_width, this.full_height, fu, fv);
+                            let sample = Sampler.Sample(sampler, scene, ray);
+                            Color.Add_mem(this.c, sample, this.c);
+                            // Buffer.AddSample(buf, x, y, sample);
+                        }
+                    }
+                }*/
                 c = c.pow(1 / 2.2);
                 var screen_index = (y * (this.full_width * 3)) + (x * 3);
                 this.updatePixel(c, screen_index);
             }
         }
+        //Terminal.time("render");
+        /*for (var y:number = this.yoffset; y < this.yoffset + this.height; y++) {
+
+            for (var x:number = this.xoffset; x < this.xoffset + this.width; x++) {
+
+                if (this.flags[this.id] === 2) {//thread locked
+                    Terminal.write("exit:3");
+                    this.lock();
+                    return;
+                }
+
+                var screen_index:number = (y * (this.full_width * 3)) + (x * 3);
+                // var _x:number = x - this.xoffset;
+                // var _y:number = y - this.yoffset;
+
+                var c:Color = new Color();
+
+                if (cameraSamples <= 0) {
+                    // random subsampling
+                    for (let i = 0; i < absCameraSamples; i++) {
+                        var fu = Math.random();
+                        var fv = Math.random();
+                        var ray = this.camera.castRay(x, y, this.full_width, this.full_height, fu, fv);
+                        c = c.add(this.scene.sample(ray, true, hitSamples, this.bounces))
+                    }
+                    c = c.divScalar(absCameraSamples);
+                } else {
+                    // stratified subsampling
+                    var n:number = Math.round(Math.sqrt(cameraSamples));
+                    for (var u = 0; u < n; u++) {
+                        for (var v = 0; v < n; v++) {
+                            var fu = (u + 0.5) / n;
+                            var fv = (v + 0.5) / n;
+                            var ray:Ray = this.camera.castRay(x, y, this.full_width, this.full_height, fu, fv);
+                            c = c.add(this.scene.sample(ray, true, hitSamples, this.bounces));
+                        }
+                    }
+                    c = c.divScalar(n * n);
+                }
+
+                if (this.flags[this.id] === 2) {//thread locked
+                    Terminal.write("exit:7");
+                    this.lock();
+                    return;
+                }
+
+                c = c.pow(1 / 2.2);
+
+                this.updatePixel(c, screen_index);
+            }
+        }*/
+        //Terminal.timeEnd("render");
     };
     xRayTracer.prototype.updatePixel = function (color, si) {
         if (this.flags[this.id] === 2) {
@@ -159,4 +250,3 @@ var xRayTracer = (function () {
     return xRayTracer;
 }());
 exports.xRayTracer = xRayTracer;
-//# sourceMappingURL=xray-tracer.js.map

@@ -1,5 +1,5 @@
-import {createRange, Log, Source, SourceRange} from "../../utils/log";
-import {assert} from "../../utils/assert";
+import {createRange, Log, Source, SourceRange} from "../../utils/log"
+import {assert} from "../../utils/assert"
 /**
  * Author: Nidin Vinayakan
  */
@@ -14,6 +14,7 @@ export enum Tokens {
     FLOAT64,
     STRING,
     ARRAY,
+    HASH,
 
         // Punctuation
     ASSIGN,
@@ -134,107 +135,108 @@ export function splitToken(first: Token, firstKind: Tokens, secondKind: Tokens):
 }
 
 export function tokenToString(token: Tokens): string {
-    if (token == Tokens.END_OF_FILE) return "end of file";
+    if (token == Tokens.END_OF_FILE) return "end of file"
 
     // Literals
-    if (token == Tokens.CHARACTER) return "character literal";
-    if (token == Tokens.IDENTIFIER) return "identifier";
-    if (token == Tokens.INT32) return "integer32 literal";
-    if (token == Tokens.INT64) return "integer64 literal";
-    if (token == Tokens.FLOAT32) return "float32 literal";
-    if (token == Tokens.FLOAT64) return "float64 literal";
-    if (token == Tokens.STRING) return "string literal";
-    if (token == Tokens.ARRAY) return "array literal";
+    if (token == Tokens.CHARACTER) return "character literal"
+    if (token == Tokens.IDENTIFIER) return "identifier"
+    if (token == Tokens.INT32) return "integer32 literal"
+    if (token == Tokens.INT64) return "integer64 literal"
+    if (token == Tokens.FLOAT32) return "float32 literal"
+    if (token == Tokens.FLOAT64) return "float64 literal"
+    if (token == Tokens.STRING) return "'string' literal"
+	if (token == Tokens.ARRAY) return "array[] literal"
+	if (token == Tokens.HASH) return "hash{} literal"
 
     // Punctuation
-    if (token == Tokens.ASSIGN) return "'='";
-    if (token == Tokens.BITWISE_AND) return "'&'";
-    if (token == Tokens.BITWISE_OR) return "'|'";
-    if (token == Tokens.BITWISE_XOR) return "'^'";
-    if (token == Tokens.COLON) return "':'";
-    if (token == Tokens.COMMA) return "','";
-    if (token == Tokens.COMPLEMENT) return "'~'";
-    if (token == Tokens.DIVIDE) return "'/'";
-    if (token == Tokens.DOT) return "'.'";
-    if (token == Tokens.EQUAL) return "'=='";
-    if (token == Tokens.EXPONENT) return "'**'";
-    if (token == Tokens.GREATER_THAN) return "'>'";
-    if (token == Tokens.GREATER_THAN_EQUAL) return "'>='";
-    if (token == Tokens.LEFT_BRACE) return "'{'";
-    if (token == Tokens.LEFT_BRACKET) return "'['";
-    if (token == Tokens.LEFT_PARENTHESIS) return "'('";
-    if (token == Tokens.LESS_THAN) return "'<'";
-    if (token == Tokens.LESS_THAN_EQUAL) return "'<='";
-    if (token == Tokens.LOGICAL_AND) return "'&&'";
-    if (token == Tokens.LOGICAL_OR) return "'||'";
-    if (token == Tokens.MINUS) return "'-'";
-    if (token == Tokens.MINUS_MINUS) return "'--'";
-    if (token == Tokens.MULTIPLY) return "'*'";
-    if (token == Tokens.NOT) return "'!'";
-    if (token == Tokens.NOT_EQUAL) return "'!='";
-    if (token == Tokens.PLUS) return "'+'";
-    if (token == Tokens.PLUS_PLUS) return "'++'";
-    if (token == Tokens.QUESTION_MARK) return "'?'";
-    if (token == Tokens.REMAINDER) return "'%'";
-    if (token == Tokens.RIGHT_BRACE) return "'}'";
-    if (token == Tokens.RIGHT_BRACKET) return "']'";
-    if (token == Tokens.RIGHT_PARENTHESIS) return "')'";
-    if (token == Tokens.SEMICOLON) return "';'";
-    if (token == Tokens.SHIFT_LEFT) return "'<<'";
-    if (token == Tokens.SHIFT_RIGHT) return "'>>'";
+    if (token == Tokens.ASSIGN) return "'='"
+    if (token == Tokens.BITWISE_AND) return "'&'"
+    if (token == Tokens.BITWISE_OR) return "'|'"
+    if (token == Tokens.BITWISE_XOR) return "'^'"
+    if (token == Tokens.COLON) return "':'"
+    if (token == Tokens.COMMA) return "','"
+    if (token == Tokens.COMPLEMENT) return "'~'"
+    if (token == Tokens.DIVIDE) return "'/'"
+    if (token == Tokens.DOT) return "'.'"
+    if (token == Tokens.EQUAL) return "'=='"
+    if (token == Tokens.EXPONENT) return "'**'"
+    if (token == Tokens.GREATER_THAN) return "'>'"
+    if (token == Tokens.GREATER_THAN_EQUAL) return "'>='"
+    if (token == Tokens.LEFT_BRACE) return "'{'"
+    if (token == Tokens.LEFT_BRACKET) return "'['"
+    if (token == Tokens.LEFT_PARENTHESIS) return "'('"
+    if (token == Tokens.LESS_THAN) return "'<'"
+    if (token == Tokens.LESS_THAN_EQUAL) return "'<='"
+    if (token == Tokens.LOGICAL_AND) return "'&&'"
+    if (token == Tokens.LOGICAL_OR) return "'||'"
+    if (token == Tokens.MINUS) return "'-'"
+    if (token == Tokens.MINUS_MINUS) return "'--'"
+    if (token == Tokens.MULTIPLY) return "'*'"
+    if (token == Tokens.NOT) return "'!'"
+    if (token == Tokens.NOT_EQUAL) return "'!='"
+    if (token == Tokens.PLUS) return "'+'"
+    if (token == Tokens.PLUS_PLUS) return "'++'"
+    if (token == Tokens.QUESTION_MARK) return "'?'"
+    if (token == Tokens.REMAINDER) return "'%'"
+    if (token == Tokens.RIGHT_BRACE) return "'}'"
+    if (token == Tokens.RIGHT_BRACKET) return "']'"
+    if (token == Tokens.RIGHT_PARENTHESIS) return "')'"
+    if (token == Tokens.SEMICOLON) return "';'"
+    if (token == Tokens.SHIFT_LEFT) return "'<<'"
+    if (token == Tokens.SHIFT_RIGHT) return "'>>'"
 
     // Keywords
-    if (token == Tokens.FROM) return "'from'";
-    if (token == Tokens.ALIGNOF) return "'alignof'";
-    if (token == Tokens.AS) return "'as'";
-    if (token == Tokens.BREAK) return "'break'";
-    if (token == Tokens.MODULE) return "'namespace'";
-    if (token == Tokens.CLASS) return "'class'";
-    if (token == Tokens.CONST) return "'const'";
-    if (token == Tokens.CONTINUE) return "'continue'";
-    if (token == Tokens.DECLARE) return "'declare'";
-    if (token == Tokens.ELSE) return "'else'";
-    if (token == Tokens.ENUM) return "'enum'";
-    if (token == Tokens.EXPORT) return "'export'";
-    if (token == Tokens.EXTENDS) return "'extends'";
-    if (token == Tokens.FALSE) return "'false'";
-    if (token == Tokens.FUNCTION) return "'function'";
-    if (token == Tokens.ANYFUNC) return "'anyfunc'";
-    if (token == Tokens.IF) return "'if'";
-    if (token == Tokens.IMPLEMENTS) return "'implements'";
-    if (token == Tokens.IMPORT) return "'import'";
-    if (token == Tokens.LET) return "'let'";
-    if (token == Tokens.NEW) return "'new'";
-    if (token == Tokens.DELETE) return "'delete'";
-    if (token == Tokens.NULL) return "'null'";
-    if (token == Tokens.UNDEFINED) return "'undefined'";
-    if (token == Tokens.OPERATOR) return "'operator'";
-    if (token == Tokens.PRIVATE) return "'private'";
-    if (token == Tokens.PROTECTED) return "'protected'";
-    if (token == Tokens.PUBLIC) return "'public'";
-    if (token == Tokens.RETURN) return "'return'";
-    if (token == Tokens.SIZEOF) return "'sizeof'";
-    if (token == Tokens.STATIC) return "'static'";
-    if (token == Tokens.THIS) return "'this'";
-    if (token == Tokens.TRUE) return "'true'";
-    if (token == Tokens.UNSAFE) return "'unsafe'";
-    if (token == Tokens.JAVASCRIPT) return "'@JS'";
-    if (token == Tokens.START) return "'@start'";
-    if (token == Tokens.VIRTUAL) return "'@virtual'";
-    if (token == Tokens.VAR) return "'var'";
-    if (token == Tokens.WHILE) return "'while'";
-    if (token == Tokens.FOR) return "'for'";
+    if (token == Tokens.FROM) return "'from'"
+    if (token == Tokens.ALIGNOF) return "'alignof'"
+    if (token == Tokens.AS) return "'as'"
+    if (token == Tokens.BREAK) return "'break'"
+    if (token == Tokens.MODULE) return "'namespace'"
+    if (token == Tokens.CLASS) return "'class'"
+    if (token == Tokens.CONST) return "'const'"
+    if (token == Tokens.CONTINUE) return "'continue'"
+    if (token == Tokens.DECLARE) return "'declare'"
+    if (token == Tokens.ELSE) return "'else'"
+    if (token == Tokens.ENUM) return "'enum'"
+    if (token == Tokens.EXPORT) return "'export'"
+    if (token == Tokens.EXTENDS) return "'extends'"
+    if (token == Tokens.FALSE) return "'false'"
+    if (token == Tokens.FUNCTION) return "'function'"
+    if (token == Tokens.ANYFUNC) return "'anyfunc'"
+    if (token == Tokens.IF) return "'if'"
+    if (token == Tokens.IMPLEMENTS) return "'implements'"
+    if (token == Tokens.IMPORT) return "'import'"
+    if (token == Tokens.LET) return "'let'"
+    if (token == Tokens.NEW) return "'new'"
+    if (token == Tokens.DELETE) return "'delete'"
+    if (token == Tokens.NULL) return "'null'"
+    if (token == Tokens.UNDEFINED) return "'undefined'"
+    if (token == Tokens.OPERATOR) return "'operator'"
+    if (token == Tokens.PRIVATE) return "'private'"
+    if (token == Tokens.PROTECTED) return "'protected'"
+    if (token == Tokens.PUBLIC) return "'public'"
+    if (token == Tokens.RETURN) return "'return'"
+    if (token == Tokens.SIZEOF) return "'sizeof'"
+    if (token == Tokens.STATIC) return "'static'"
+    if (token == Tokens.THIS) return "'this'"
+    if (token == Tokens.TRUE) return "'true'"
+    if (token == Tokens.UNSAFE) return "'unsafe'"
+    if (token == Tokens.JAVASCRIPT) return "'@JS'"
+    if (token == Tokens.START) return "'@start'"
+    if (token == Tokens.VIRTUAL) return "'@virtual'"
+    if (token == Tokens.VAR) return "'var'"
+    if (token == Tokens.WHILE) return "'while'"
+    if (token == Tokens.FOR) return "'for'"
 
     // Preprocessor
-    if (token == Tokens.PREPROCESSOR_DEFINE) return "'#define'";
-    if (token == Tokens.PREPROCESSOR_ELIF) return "'#elif'";
-    if (token == Tokens.PREPROCESSOR_ELSE) return "'#else'";
-    if (token == Tokens.PREPROCESSOR_ENDIF) return "'#endif'";
-    if (token == Tokens.PREPROCESSOR_ERROR) return "'#error'";
-    if (token == Tokens.PREPROCESSOR_IF) return "'#if'";
-    if (token == Tokens.PREPROCESSOR_NEWLINE) return "newline";
-    if (token == Tokens.PREPROCESSOR_UNDEF) return "'#undef'";
-    if (token == Tokens.PREPROCESSOR_WARNING) return "'#warning'";
+    if (token == Tokens.PREPROCESSOR_DEFINE) return "'#define'"
+    if (token == Tokens.PREPROCESSOR_ELIF) return "'#elif'"
+    if (token == Tokens.PREPROCESSOR_ELSE) return "'#else'"
+    if (token == Tokens.PREPROCESSOR_ENDIF) return "'#endif'"
+    if (token == Tokens.PREPROCESSOR_ERROR) return "'#error'"
+    if (token == Tokens.PREPROCESSOR_IF) return "'#if'"
+    if (token == Tokens.PREPROCESSOR_NEWLINE) return "newline"
+    if (token == Tokens.PREPROCESSOR_UNDEF) return "'#undef'"
+    if (token == Tokens.PREPROCESSOR_WARNING) return "'#warning'"
 
     assert(false);
     return null;
@@ -682,6 +684,7 @@ export function tokenize(source: Source, log: Log): Token {
             else if (text == "#if") kind = Tokens.PREPROCESSOR_IF;
             else if (text == "#undef") kind = Tokens.PREPROCESSOR_UNDEF;
             else if (text == "#warning") kind = Tokens.PREPROCESSOR_WARNING;
+            // else if (text == "#todo") kind = Tokens.TODO
 
             // Allow a shebang at the start of the file
             else if (start == 0 && text == "#" && i < limit && contents[i] == '!') {
@@ -696,22 +699,23 @@ export function tokenize(source: Source, log: Log): Token {
 
                 // Check for #if typos
                 if (text == "#ifdef") {
-                    errorMessage += ", did you mean '#if'?";
+                    errorMessage += ", did you mean '#if'?"
                     kind = Tokens.PREPROCESSOR_IF;
                 }
-
-                // Check for #elif typos
                 else if (text == "#elsif" || text == "#elseif") {
-                    errorMessage += ", did you mean '#elif'?";
+                    errorMessage += ", did you mean '#elif'?"
                     kind = Tokens.PREPROCESSOR_ELIF;
                 }
-
-                // Check for #endif typos
                 else if (text == "#end") {
-                    errorMessage += ", did you mean '#endif'?";
+                    errorMessage += ", did you mean '#endif'?"
                     kind = Tokens.PREPROCESSOR_ENDIF;
                 }
-
+                else { // ALLOW # COMMENTS!
+	                while (i < limit && contents[i] != '\n') {
+		                i = i + 1;
+	                }
+	                continue;
+                }
                 log.error(createRange(source, start, i), errorMessage);
             }
 

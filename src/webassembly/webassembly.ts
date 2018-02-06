@@ -419,7 +419,9 @@ class WasmModuleEmitter {
                 this.assembler.activeCode.removeLastLinebreak();
                 this.assembler.activeCode.append(`)\n`);
             } else {
-                console.log("External function " + fn.name);
+                if(fn.name!="<anonymous>")
+                    console.log("External function " + fn.name);
+                // else ???
             }
 
             section.payload.writeUnsignedLEB128(fn.body.length);

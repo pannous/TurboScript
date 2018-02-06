@@ -27,7 +27,7 @@ function loadStdlibForWebAssembly() {
 
         assert: function (truth) {
             if (!truth) {
-                throw new Error('Assertion failed');
+                throw new Error('Assertion failed!');
             }
         },
 

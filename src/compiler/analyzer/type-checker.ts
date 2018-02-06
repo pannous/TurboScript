@@ -857,7 +857,7 @@ export function resolveAsExpression(context: CheckContext, node: Node, parentSco
 
     if (node.resolvedType != context.errorType) {
         if (node.isType()) {
-            context.log.error(node.range, "Expected expression but found type");
+            context.log.error(node.range, "Expected expression but found type "+node.castType());
             node.resolvedType = context.errorType;
         }
 
@@ -1635,7 +1635,7 @@ export function resolve(context: CheckContext, node: Node, parentScope: Scope): 
 
                 if (returnType.resolvedType.isArray()) {
 	                try {
-		                Terminal.write(returnType);
+		                Terminal.write("resolvedType "+returnType.__internal_rawValue+"\n");//?
 	                } catch (e) {
 	                    console.log("can't write "+returnType)
 	                    console.log(e)

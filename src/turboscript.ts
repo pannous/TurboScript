@@ -58,9 +58,7 @@ async function runWasm(file: string) {
 	let module = await WebAssembly.compile(_wasm);
 	let instance = await WebAssembly.instantiate(module, imports);
 	if (instance.exports.main)
-		console.log("runWasm GOT MOSHFD")
-	else console.log("NO MAIN")
-	console.log(">>>",instance.exports.main());
+		console.log(instance.exports.main());
 	return '...';
 }
 
